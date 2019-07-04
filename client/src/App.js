@@ -6,11 +6,12 @@ import ParticipantForm from './components/ParticipantForm';
 
 import store from './store';
 
-const request = require("request");
+//const request = require("request");
 
 class App extends React.Component {
 
-button = () => {
+
+/*button = () => {
   request("http://localhost:3333/classes", function(error, response, body) {
     if (error) {
         // Print the error if one occurred 
@@ -21,7 +22,7 @@ button = () => {
      console.log(body)
     }
   })
-}
+}*/
 
   render() {
     return (

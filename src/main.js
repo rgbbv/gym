@@ -1,5 +1,5 @@
 
-var ID = require('./ID');
+var ID = {IdMaker: () => '_' + Math.random().toString(36).substr(2, 9)};
 var express = require('express');
 var body = require('body-parser');
 
@@ -8,29 +8,29 @@ var body = require('body-parser');
 calender = {
     classes: [
     {
-      id: ID.IdMaker,
-      title: 'Take out the trash',
+      id: ID.IdMaker(),
+      title: 'title 1',
 	  day: 'Wednesday',
 	  hour: '12:30',
 	  duration: 2.5
     },
     {
-		id: ID.IdMaker,
-		title: 'Take out the trash',
+		id: ID.IdMaker(),
+		title: 'title 2',
 		day: 'Sunday',
 		hour: '12:30',
 		duration: 2
 	  },
 	  {
-		id: ID.IdMaker,
-		title: 'Take out the trash',
+		id: ID.IdMaker(),
+		title: 'title 3',
 		day: 'Tuesday',
 		hour: '12:30',
 		duration: 1
 	  },
 	  {
-		id: ID.IdMaker,
-		title: 'Take out the trash',
+		id: ID.IdMaker(),
+		title: 'title 4',
 		day: 'Thursday',
 		hour: '12:30',
 		duration: 1.5

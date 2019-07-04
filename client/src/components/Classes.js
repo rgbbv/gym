@@ -5,9 +5,11 @@ import { getClasses } from '../actions/classActions';
 import Table from './Table'
 
 class Classes extends Component {
+
   componentWillMount() {
-    this.props.getClasses();
+    this.props.getClasses()
   }
+
 
  /* componentWillReceiveProps(nextProps) {
     if (nextProps.newParticipant) {
@@ -16,10 +18,12 @@ class Classes extends Component {
   }*/
 
 
+
 render() {
     return (
       <div>
         <h1>classes</h1>
+        <Table table={this.props.classes} />
       </div>
     )
 }

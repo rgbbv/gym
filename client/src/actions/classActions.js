@@ -13,8 +13,6 @@ export const getClasses = () => dispatch => {
                 type: GET_CLASSES,
                 payload: JSON.parse(body).classes
               })
-         // this.store.dispatch(this.changeClasses(body));
-         console.log(body)
         }
       })
     };

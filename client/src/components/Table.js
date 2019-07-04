@@ -1,22 +1,23 @@
 import React from 'react'
+import { loadPartialConfig } from '@babel/core';
+import store from '../store';
+
 
 class Table extends React.Component {
-  constructor(props) {
-    super(props)
- }
+
 
  renderTableHeader() {
-    console.log(this.state)
-    let header = Object.keys(this.state.classes[0])
+    if (this.props.table.classes.length === 0) return 'loading...'
+    let header = Object.keys(this.props.table.classes[0])
     return header.map((key, index) => {
        return <th key={index}>{key.toUpperCase()}</th>
     })
  }
 
  renderTableData() {
-    const arr = []
-    this.props.Table.forEach((cell) => arr.concat(cell))
-    return arr.map((cell, index) => {
+   console.log(this.props)
+    if (this.props.table === null) return ''
+    return this.props.table.classes.map((cell, index) => {
        const { id, title, day, hour, duration } = cell //destructuring
        return (
           <tr key={id}>
