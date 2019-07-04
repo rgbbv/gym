@@ -3,13 +3,11 @@ import './App.css'
 import { Provider } from 'react-redux'
 import Classes from './components/Classes';
 import ParticipantForm from './components/ParticipantForm';
-
 import store from './store';
 
 //const request = require("request");
 
 class App extends React.Component {
-
 
 /*button = () => {
   request("http://localhost:3333/classes", function(error, response, body) {
@@ -23,7 +21,6 @@ class App extends React.Component {
     }
   })
 }*/
-
   render() {
     return (
       <Provider store={store}>

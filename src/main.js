@@ -12,28 +12,36 @@ calender = {
       title: 'title 1',
 	  day: 'Wednesday',
 	  hour: '12:30',
-	  duration: 2.5
+	  duration: 2.5,
+	  maxParticipants: 5,
+	  currentlyRegistered: 2
     },
     {
 		id: ID.IdMaker(),
 		title: 'title 2',
 		day: 'Sunday',
 		hour: '12:30',
-		duration: 2
+		duration: 2,
+		maxParticipants: 10,
+		currentlyRegistered: 7
 	  },
 	  {
 		id: ID.IdMaker(),
 		title: 'title 3',
 		day: 'Tuesday',
 		hour: '12:30',
-		duration: 1
+		duration: 1,
+		maxParticipants: 9,
+		currentlyRegistered: 8
 	  },
 	  {
 		id: ID.IdMaker(),
 		title: 'title 4',
 		day: 'Thursday',
 		hour: '12:30',
-		duration: 1.5
+		duration: 1.5,
+		maxParticipants: 6,
+		currentlyRegistered: 6
 	  }
   ]
 }

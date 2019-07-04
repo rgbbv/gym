@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "git": "^0.1.5",
+    "lodash": "^4.17.11",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^7.1.0",
