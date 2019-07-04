@@ -3,8 +3,10 @@ import Todoitem from './components/Todoitem'
 import Header from './components/layout/Header'
 import Table from './components/Table'
 import './App.css'
+import { Provider } from 'react-redux'
 
 const request = require("request");
+const store = createStore(() => [], {}, applyMiddleware());
 
 class App extends React.Component {
   state = {
@@ -36,16 +38,18 @@ changeClasses = (newClasses) => {
 
   render() {
     return (
-      
+      <Provider store = {store}>
         <div className="App">
           <div className="container">
             <Header />
               <React.Fragment>
+                  store.
                   <Todoitem button={this.button} />
               </React.Fragment>
              />
           </div>
         </div>
+      </Provider>
     );
   }
 }
