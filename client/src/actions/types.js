@@ -1,0 +1,2 @@
+export const GET_CLASSES = 'GET_CLASSES';
+export const NEW_PARTICIPANT = 'NEW_PARTICIPANT';

@@ -1,17 +1,14 @@
 import React from 'react'
-import Todoitem from './components/Todoitem'
-import Header from './components/layout/Header'
-import Table from './components/Table'
 import './App.css'
 import { Provider } from 'react-redux'
+import Classes from './components/Classes';
+import ParticipantForm from './components/ParticipantForm';
+
+import store from './store';
 
 const request = require("request");
-const store = createStore(() => [], {}, applyMiddleware());
 
 class App extends React.Component {
-  state = {
-    classes: []
-  }
 
 button = () => {
   request("http://localhost:3333/classes", function(error, response, body) {
@@ -23,31 +20,18 @@ button = () => {
      // this.store.dispatch(this.changeClasses(body));
      console.log(body)
     }
-  stateChanger(body)
   })
-}
-
-stateChanger = (body) => {
-  this.setState(body)
-}
-changeClasses = (newClasses) => {
-  return {
-    payload: newClasses
-  }
 }
 
   render() {
     return (
-      <Provider store = {store}>
+      <Provider store={store}>
         <div className="App">
-          <div className="container">
-            <Header />
-              <React.Fragment>
-                  store.
-                  <Todoitem button={this.button} />
-              </React.Fragment>
-             />
-          </div>
+          <header className="My Gym">
+            <ParticipantForm />
+            <hr />
+            <Classes />
+          </header>
         </div>
       </Provider>
     );

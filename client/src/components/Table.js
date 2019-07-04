@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 class Table extends React.Component {
   constructor(props) {
@@ -6,6 +6,7 @@ class Table extends React.Component {
  }
 
  renderTableHeader() {
+    console.log(this.state)
     let header = Object.keys(this.state.classes[0])
     return header.map((key, index) => {
        return <th key={index}>{key.toUpperCase()}</th>
