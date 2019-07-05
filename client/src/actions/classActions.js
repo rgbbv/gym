@@ -1,4 +1,5 @@
 import { GET_CLASSES, FAILED_REGISTER, PUT_ID, REGISTER_COMPLETE } from './types';
+import {push} from 'react-router-redux'
 
 const request = require("request");
 
@@ -29,7 +30,7 @@ export const getClasses = () => dispatch => {
       })
     };
 
-export const addParticipant = (participantId, courseId) => dispatch => {
+export const addParticipant = (participantId, courseId, history) => dispatch => {
   request.post("http://localhost:3333/register", {form:{participantId: participantId, courseId: courseId}},
    function(error, response, body) {
     if (error) {
@@ -44,9 +45,11 @@ export const addParticipant = (participantId, courseId) => dispatch => {
         })
       }
       else {
+        history.push("/Thankyou")
         dispatch({
           type: REGISTER_COMPLETE,
-          payload: courseId
+          payload: courseId,
+          
         })
       }
     }

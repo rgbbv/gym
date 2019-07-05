@@ -3,12 +3,14 @@ import {omit} from 'lodash'
 import { addParticipant } from '../actions/classActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom"
+
 
 class Table extends React.Component {
 
  register = (courseId) => {
    var participantId = this.props.table.id
-   this.props.addParticipant(participantId, courseId)
+   this.props.addParticipant(participantId, courseId, this.props.history)
  }
 
 
@@ -40,6 +42,7 @@ class Table extends React.Component {
     })
  }
  render() {
+
     return (
        <div>
           <h1 id='title'>React Dynamic Table</h1>
@@ -59,4 +62,4 @@ Table.propTypes = {
  };
 
  
- export default connect(null, { addParticipant })(Table);
+ export default connect(null, { addParticipant })(withRouter(Table));

@@ -1,7 +1,8 @@
 import React from 'react'
 import Classes from './Classes'
 
-const Home = () => {
+
+const Home = (props) => {
   return (
     <div>
       <div className="App">

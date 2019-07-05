@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { getClasses, putId } from '../actions/classActions';
 import Table from './Table'
 
+
+
 class Classes extends Component {
 
   componentWillMount() {
     this.props.getClasses()
     this.props.putId()
-    
   }
-
 
 render() {
     return (
@@ -30,7 +30,8 @@ Classes.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  classes: state.classes
+  classes: state.classes,
+  registered: state.registered
 });
 
 export default connect(mapStateToProps, { getClasses, putId })(Classes);

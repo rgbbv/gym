@@ -35,7 +35,8 @@ export default function(state = initialState, action) {
       return {
         ...state,
         registered: true,
-        classes: state.classes.map( cur=> classAdder(action.payload,cur))
+        classes: state.classes.map( cur=> classAdder(action.payload,cur)),
+        push: action.push
       }
     default:
       return state;
