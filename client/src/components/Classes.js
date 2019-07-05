@@ -11,13 +11,6 @@ class Classes extends Component {
   }
 
 
- /* componentWillReceiveProps(nextProps) {
-    if (nextProps.newParticipant) {
-      this.props.classes.push
-    }
-  }*/
-
-
 
 render() {
     return (
@@ -32,12 +25,10 @@ render() {
 
 Classes.propTypes = {
   getClasses: PropTypes.func.isRequired,
-  newParticipant: PropTypes.object
 };
 
 const mapStateToProps = state => ({
-  classes: state.classes,
-  newParticipant: state.participant
+  classes: state.classes
 });
 
 export default connect(mapStateToProps, { getClasses })(Classes);

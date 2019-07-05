@@ -1,7 +1,7 @@
 import React from 'react'
-import { loadPartialConfig } from '@babel/core';
-import store from '../store';
 import {omit} from 'lodash'
+import store from '../store';
+import { putId, addParticipant } from '../actions/classActions';
 
 
 class Table extends React.Component {
@@ -16,8 +16,14 @@ class Table extends React.Component {
     })
  }
 
+register(courseId) {
+   var courseId = courseId
+   var participantId = store.getState.id 
+   store.dispatch(addParticipant(participantId, courseId))
+
+}
+
  renderTableData() {
-   console.log(this.props)
     if (this.props.table === null) return ''
     return this.props.table.classes.map((cell, index) => {
        const { id, title, day, hour, duration, maxParticipants, currentlyRegistered } = cell //destructuring
@@ -28,11 +34,11 @@ class Table extends React.Component {
              <td>{hour}</td>
              <td>{duration}</td>
              <td>{maxParticipants-currentlyRegistered+'/'+maxParticipants}</td>
+             <button onClick={this.register(id)} type="submit">register</button>
           </tr>
        )
     })
  }
-
  render() {
     return (
        <div>

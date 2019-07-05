@@ -1,4 +1,4 @@
-import { GET_CLASSES, NEW_PARTICIPANT } from '../actions/types';
+import { GET_CLASSES, ADD_PARTICIPANT, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE  } from '../actions/types';
 
 
 const initialState = {
@@ -13,11 +13,29 @@ export default function(state = initialState, action) {
         ...state,
         classes: action.payload
       };
-    case NEW_PARTICIPANT:
+    case ADD_PARTICIPANT:
       return {
         ...state,
-        participant: action.payload
+        accepted: false
       };
+    case PUT_ID:
+      return {
+        ...state,
+        id: action.payload,
+        accepted: true
+      }
+    case FAILED_REGISTER:
+      return {
+        ...state,
+        registered: false,
+        accepted: true
+
+      }
+    case REGISTER_COMPLETE:
+      return {
+        ...state,
+        registered: true
+      }
     default:
       return state;
   }
