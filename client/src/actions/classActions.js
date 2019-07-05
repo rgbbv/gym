@@ -1,13 +1,6 @@
-import { GET_CLASSES, NEW_PARTICIPANT, FAILED_REGISTER, PUT_ID, REGISTER_COMPLETE } from './types';
-import store from '../store'
+import { GET_CLASSES, FAILED_REGISTER, PUT_ID, REGISTER_COMPLETE } from './types';
 
 const request = require("request");
-
-export const failedRegister = () => dispatch => {
-  dispatch({
-    type: FAILED_REGISTER
-  })
-}
 
 export const putId = () => dispatch => {
   const userIdKey = 'currentUserId'
@@ -37,21 +30,25 @@ export const getClasses = () => dispatch => {
     };
 
 export const addParticipant = (participantId, courseId) => dispatch => {
-  console.log('participantId: '+participantId)
-  console.log('courseId: '+courseId)
   request.post("http://localhost:3333/register", {form:{participantId: participantId, courseId: courseId}},
    function(error, response, body) {
     if (error) {
-      console.log(error)
-      store.dispatch(failedRegister)
+      dispatch({
+        type: FAILED_REGISTER
+      })
     }
     else {
-      console.log(response.body)
-      console.log(courseId)
-      dispatch({
-        type: REGISTER_COMPLETE,
-        payload: courseId
-      })
+      if (response.statusCode === 404) {
+        dispatch({
+          type: FAILED_REGISTER
+        })
+      }
+      else {
+        dispatch({
+          type: REGISTER_COMPLETE,
+          payload: courseId
+        })
+      }
     }
   })
 };

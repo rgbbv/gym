@@ -95,7 +95,6 @@ freeSpot = (form, course) => {
 	 return true
 }
 canRegister = (form, course) => {
-	console.log(form.courseId+' '+course.title+' '+course.id)
 	var participantId = form.participantId
 	var courseId = form.courseId
 	 if(course.id === form.courseId) {

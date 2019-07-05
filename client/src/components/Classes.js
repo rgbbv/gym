@@ -9,6 +9,7 @@ class Classes extends Component {
   componentWillMount() {
     this.props.getClasses()
     this.props.putId()
+    
   }
 
 
