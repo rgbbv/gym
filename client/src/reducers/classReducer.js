@@ -34,9 +34,15 @@ export default function(state = initialState, action) {
     case REGISTER_COMPLETE:
       return {
         ...state,
-        registered: true
+        registered: true,
+        classes: state.classes.map( cur=> classAdder(action.payload,cur))
       }
     default:
       return state;
   }
+}
+
+const classAdder = (id, cur) => {
+  if (cur.id === id) cur.currentlyRegistered++
+  return cur
 }

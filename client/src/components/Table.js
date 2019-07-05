@@ -44,7 +44,7 @@ class Table extends React.Component {
     return (
        <div>
           <h1 id='title'>React Dynamic Table</h1>
-          <table id='students'>
+          <table id='classes'>
              <tbody>
                 <tr>{this.renderTableHeader()}</tr>
                 {this.renderTableData()}

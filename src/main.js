@@ -4,7 +4,7 @@ var express = require('express');
 var bodypar = require('body-parser')
 
 
-calender = {
+calendar = {
     classes: [
     {
       id: ID.IdMaker(),
@@ -46,19 +46,19 @@ calender = {
 }
 waitingLists = [
 	  {
-		  id: calender.classes[0],
+		  id: calendar.classes[0],
 		  waiting: []
 	  },
 	  {
-		  id: calender.classes[1],
+		  id: calendar.classes[1],
 		  waiting: []
 	  },
 	  {
-		  id: calender.classes[2],
+		  id: calendar.classes[2],
 		  waiting: []
 	  },
 	  {
-		  id: calender.classes[3],
+		  id: calendar.classes[3],
 		  waiting: []
 	  }
   ]
@@ -76,12 +76,12 @@ app.use((req, res, next) => {
 app.all('/register', (req, res) => {
 
 	if (req.method === 'DELETE') {
-		calender.classes.map((cur) => freeSpot(req.body, cur))
+		calendar.classes.map((cur) => freeSpot(req.body, cur))
 		res.send('you have been deleted')
 	} else if (req.method === 'POST') {
-		calender.classes.reduce( (cur,acc) => acc && canRegister(req.body, cur), true) ?
-		 res.status(404).send('sadly there are no more open spots in this class. feel free to join the waiting list')
-		 //res.send('you have been signed in to the class');
+		calendar.classes.reduce( (acc,cur) => acc && canRegister(req.body, cur), true) ?
+		 res.send('you have been signed in to the class'):
+		 res.status(404).send('sadly there are no more open spots in this class. feel free to join the waiting list');
 	}
 });
 
@@ -95,17 +95,25 @@ freeSpot = (form, course) => {
 	 return true
 }
 canRegister = (form, course) => {
+	console.log(form.courseId+' '+course.title+' '+course.id)
 	var participantId = form.participantId
 	var courseId = form.courseId
-	 if(course.id = form.participantId) {
-		  if(course.currentlyRegistered < course.maxParticipants) course.currentlyRegistered++
-		  else {return false}
+	 if(course.id === form.courseId) {
+		 console.log('cur: '+course.currentlyRegistered+' max: '+course.maxParticipants)
+		  if(course.currentlyRegistered < course.maxParticipants)  {
+			  console.log('possible')
+			  course.currentlyRegistered++
+		  }
+		  else {
+			  console.log('impossible')
+			 return false
+		}
 	 }
 	 return true
 }
 
 app.get('/classes', (req, res) => {
-	res.json(calender);
+	res.json(calendar);
 });
 
 app.listen(3333);

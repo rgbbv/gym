@@ -37,6 +37,8 @@ export const getClasses = () => dispatch => {
     };
 
 export const addParticipant = (participantId, courseId) => dispatch => {
+  console.log('participantId: '+participantId)
+  console.log('courseId: '+courseId)
   request.post("http://localhost:3333/register", {form:{participantId: participantId, courseId: courseId}},
    function(error, response, body) {
     if (error) {
@@ -45,8 +47,10 @@ export const addParticipant = (participantId, courseId) => dispatch => {
     }
     else {
       console.log(response.body)
+      console.log(courseId)
       dispatch({
-        type: REGISTER_COMPLETE
+        type: REGISTER_COMPLETE,
+        payload: courseId
       })
     }
   })
