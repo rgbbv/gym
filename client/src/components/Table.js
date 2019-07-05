@@ -2,9 +2,15 @@ import React from 'react'
 import {omit} from 'lodash'
 import store from '../store';
 import { putId, addParticipant } from '../actions/classActions';
-
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Table extends React.Component {
+
+ register = (courseId) => {
+   var participantId = this.props.table.id
+   this.props.addParticipant(participantId, courseId)
+ }
 
 
  renderTableHeader() {
@@ -16,12 +22,7 @@ class Table extends React.Component {
     })
  }
 
-register(courseId) {
-   var courseId = courseId
-   var participantId = store.getState.id 
-   store.dispatch(addParticipant(participantId, courseId))
 
-}
 
  renderTableData() {
     if (this.props.table === null) return ''
@@ -34,7 +35,7 @@ register(courseId) {
              <td>{hour}</td>
              <td>{duration}</td>
              <td>{maxParticipants-currentlyRegistered+'/'+maxParticipants}</td>
-             <button onClick={this.register(id)} type="submit">register</button>
+             <button onClick={this.register.bind(this, id)} type="submit">register</button>
           </tr>
        )
     })
@@ -54,4 +55,9 @@ register(courseId) {
  }
 }
 
-export default Table 
+Table.propTypes = {
+   addParticipant: PropTypes.func.isRequired,
+ };
+
+ 
+ export default connect(null, { addParticipant })(Table);

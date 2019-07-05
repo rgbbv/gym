@@ -76,11 +76,10 @@ app.use((req, res, next) => {
 app.all('/register', (req, res) => {
 
 	if (req.method === 'DELETE') {
-		//calender.classes.map((cur) => freeSpot(req.body, cur))
+		calender.classes.map((cur) => freeSpot(req.body, cur))
 		res.send('you have been deleted')
 	} else if (req.method === 'POST') {
-		console.log(req.body)
-		//calender.classes.reduce( (cur,acc) => acc && canRegister(req.body, cur), true) ?
+		calender.classes.reduce( (cur,acc) => acc && canRegister(req.body, cur), true) ?
 		 res.status(404).send('sadly there are no more open spots in this class. feel free to join the waiting list')
 		 //res.send('you have been signed in to the class');
 	}
