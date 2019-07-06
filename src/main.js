@@ -1,7 +1,23 @@
 
 var ID = {IdMaker: () => '_' + Math.random().toString(36).substr(2, 9)};
 var express = require('express');
-var bodypar = require('body-parser')
+var bodypar = require('body-parser');
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+	host     : 'localhost',
+	user     : 'root',
+	password : '1234',
+	database : 'gymDB'
+  });
+
+  connection.connect(function(err) {
+	if (err) {
+	  console.error('error connecting: ' + err.stack);
+	  return;
+	}
+})
+  
 
 
 calendar = {
@@ -74,59 +90,37 @@ app.use((req, res, next) => {
 });
 
 app.post('/waiting', (req, res) => {
-	waitingLists.map((cur) => addToWaitingList(req.body, cur))
-	console.log('')
+	var que = 'INSERT IGNORE INTO waiting (courseId, participantId, time) VALUES (?, ?, ?)'
+	connection.query(que, [[req.body.courseId, req.body.participantId,
+		Date.now()]], (err) => { if(err) throw err })
 	res.send('you have been added to the waiting list')
 })
 
-addToWaitingList = (form, waitingList) => {
-	if (form.courseId == waitingList.id) {
-		var arr = waitingList.waiting
-		if (!arr.includes(form.email))
-			waitingList.waiting.push(form.email)
-	}
-	console.log(waitingList)
-	return waitingList
-}
 
 app.all('/register', (req, res) => {
 
-	if (req.method === 'DELETE') {
-		calendar.classes.map((cur) => freeSpot(req.body, cur))
-		res.send('you have been deleted')
-	} else if (req.method === 'POST') {
-		calendar.classes.reduce( (acc,cur) => acc && canRegister(req.body, cur), true) ?
-		 res.send('you have been signed in to the class'):
-		 res.status(222).send('sadly there are no more open spots in this class. feel free to join the waiting list');
+	if (req.method === 'POST') {
+		var que = 'INSERT IGNORE INTO registered (courseId, participantId) VALUES (?, ?)'
+		connection.query(que, [[req.body.courseId, req.body.participantId]], 
+		(err) =>  {
+			 if (err) res.status(222).send('sadly there are no more open spots in this class. feel free to join the waiting list')
+		})
 	}
 });
 
-freeSpot = (form, course) => {
-	var participantId = form.participantId
-	var courseId = form.courseId
-	 if(course.id = form.participantId) {
-		  if(course.currentlyRegistered < course.maxParticipants) course.currentlyRegistered--
-		  else {return false}
-	 }
-	 return true
-}
-canRegister = (form, course) => {
-	var participantId = form.participantId
-	var courseId = form.courseId
-	 if(course.id === form.courseId) {
-		  if(course.currentlyRegistered < course.maxParticipants)  {
-			  course.currentlyRegistered++
-		  }
-		  else {
-			 return false
-		}
-	 }
-	 return true
-}
-
 app.get('/classes', (req, res) => {
-	res.json(calendar);
+	var que = 'SELECT * FROM classes'
+	connection.query(que, (err,rows) => { if(err) throw err
+		var secondQue = 'SELECT courseId, COUNT(*) FROM gymdb.registered group by courseId'
+		connection.query(secondQue, (err2, rows2) => { if(err2) throw err2
+		res.send({rows, rows2})})})
 });
+
+app.get('/login', (req, res) => {
+	var que = 'INSERT IGNORE INTO users (id,email,user) VALUES (?,?,?)'
+	connection.query(que, [req.body.id, req.body.email, req.body.user], (err) => { if (err) throw err })
+	res.send('logged in')
+})
 
 app.listen(3333);
 
