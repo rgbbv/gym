@@ -1,6 +1,6 @@
 import React from 'react'
 import {omit} from 'lodash'
-import { addParticipant } from '../actions/classActions';
+import { addParticipant, joinWaitingList } from '../actions/classActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom"
@@ -11,6 +11,11 @@ class Table extends React.Component {
  register = (courseId) => {
    var participantId = this.props.table.id
    this.props.addParticipant(participantId, courseId, this.props.history)
+ }
+
+ waitingRegister = (courseId) => {
+    var participantId = this.props.table.id
+    this.props.joinWaitingList(participantId, courseId)
  }
 
 
@@ -37,6 +42,7 @@ class Table extends React.Component {
              <td>{duration}</td>
              <td>{maxParticipants-currentlyRegistered+'/'+maxParticipants}</td>
              <button onClick={this.register.bind(this, id)} type="submit">register</button>
+             <button onClick={this.waitingRegister.bind(this, id)} type="submit">waiting list</button>
           </tr>
        )
     })
@@ -59,7 +65,8 @@ class Table extends React.Component {
 
 Table.propTypes = {
    addParticipant: PropTypes.func.isRequired,
+   joinWaitingList: PropTypes.func.isRequired
  };
 
  
- export default connect(null, { addParticipant })(withRouter(Table));
+ export default connect(null, { addParticipant, joinWaitingList })(withRouter(Table));

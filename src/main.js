@@ -11,7 +11,7 @@ calendar = {
       title: 'title 1',
 	  day: 'Wednesday',
 	  hour: '12:30',
-	  duration: 2.5,
+	  duration: '2.5 hours',
 	  maxParticipants: 5,
 	  currentlyRegistered: 2
     },
@@ -19,8 +19,8 @@ calendar = {
 		id: ID.IdMaker(),
 		title: 'title 2',
 		day: 'Sunday',
-		hour: '12:30',
-		duration: 2,
+		hour: '10:00',
+		duration: '2 hourse',
 		maxParticipants: 10,
 		currentlyRegistered: 7
 	  },
@@ -28,8 +28,8 @@ calendar = {
 		id: ID.IdMaker(),
 		title: 'title 3',
 		day: 'Tuesday',
-		hour: '12:30',
-		duration: 1,
+		hour: '16:30',
+		duration: '1 hour',
 		maxParticipants: 9,
 		currentlyRegistered: 8
 	  },
@@ -37,8 +37,8 @@ calendar = {
 		id: ID.IdMaker(),
 		title: 'title 4',
 		day: 'Thursday',
-		hour: '12:30',
-		duration: 1.5,
+		hour: '20:15',
+		duration: '1.5 hourse',
 		maxParticipants: 6,
 		currentlyRegistered: 6
 	  }
@@ -46,19 +46,19 @@ calendar = {
 }
 waitingLists = [
 	  {
-		  id: calendar.classes[0],
+		  id: calendar.classes[0].id,
 		  waiting: []
 	  },
 	  {
-		  id: calendar.classes[1],
+		  id: calendar.classes[1].id,
 		  waiting: []
 	  },
 	  {
-		  id: calendar.classes[2],
+		  id: calendar.classes[2].id,
 		  waiting: []
 	  },
 	  {
-		  id: calendar.classes[3],
+		  id: calendar.classes[3].id,
 		  waiting: []
 	  }
   ]
@@ -73,6 +73,21 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.post('/waiting', (req, res) => {
+	//console.log(req)
+	waitingLists.map((cur) => addToWaitingList(req.body, cur))
+	res.send('you have been added to the waiting list')
+})
+
+addToWaitingList = (form, waitingList) => {
+	if (form.courseId == waitingList.id) {
+		var arr = waitingList.waiting
+		if (!arr.includes(form.participantId))
+			waitingList.waiting.push(form.participantId)
+	}
+	return waitingList
+}
+
 app.all('/register', (req, res) => {
 
 	if (req.method === 'DELETE') {
@@ -81,7 +96,7 @@ app.all('/register', (req, res) => {
 	} else if (req.method === 'POST') {
 		calendar.classes.reduce( (acc,cur) => acc && canRegister(req.body, cur), true) ?
 		 res.send('you have been signed in to the class'):
-		 res.status(404).send('sadly there are no more open spots in this class. feel free to join the waiting list');
+		 res.status(200).send('sadly there are no more open spots in this class. feel free to join the waiting list');
 	}
 });
 
