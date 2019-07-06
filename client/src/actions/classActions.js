@@ -1,4 +1,4 @@
-import { GET_CLASSES, FAILED_REGISTER, PUT_ID, REGISTER_COMPLETE, ENTERED_WAITINGLIST } from './types';
+import { GET_CLASSES, FAILED_REGISTER, PUT_ID, REGISTER_COMPLETE } from './types';
 
 const request = require("request");
 
@@ -29,22 +29,6 @@ export const getClasses = () => dispatch => {
       })
     };
 
-export const joinWaitingList = (participantId, courseId) => dispatch => {
-  request.post("http://localhost:3333/waiting", {form:{ participantId: participantId, courseId: courseId}},
-  function(error, response, body) {
-    if (error) {
-      alert('currently we are unable to add you to the waiting list. please try later')
-    }
-    else {
-      alert(response.body)
-      dispatch({
-        type: ENTERED_WAITINGLIST,
-        payload: {participantId: participantId, courseId: courseId}
-      })
-    }
-  })
-}
-
 export const addParticipant = (participantId, courseId, history) => dispatch => {
   request.post("http://localhost:3333/register", {form:{participantId: participantId, courseId: courseId}},
    function(error, response, body) {
@@ -54,7 +38,7 @@ export const addParticipant = (participantId, courseId, history) => dispatch => 
       })
     }
     else {
-      if (response.statusCode === 200) {
+      if (response.statusCode === 222) {
         alert(response.body)
         dispatch({
           type: FAILED_REGISTER

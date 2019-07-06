@@ -74,17 +74,18 @@ app.use((req, res, next) => {
 });
 
 app.post('/waiting', (req, res) => {
-	//console.log(req)
 	waitingLists.map((cur) => addToWaitingList(req.body, cur))
+	console.log('')
 	res.send('you have been added to the waiting list')
 })
 
 addToWaitingList = (form, waitingList) => {
 	if (form.courseId == waitingList.id) {
 		var arr = waitingList.waiting
-		if (!arr.includes(form.participantId))
-			waitingList.waiting.push(form.participantId)
+		if (!arr.includes(form.email))
+			waitingList.waiting.push(form.email)
 	}
+	console.log(waitingList)
 	return waitingList
 }
 
@@ -96,7 +97,7 @@ app.all('/register', (req, res) => {
 	} else if (req.method === 'POST') {
 		calendar.classes.reduce( (acc,cur) => acc && canRegister(req.body, cur), true) ?
 		 res.send('you have been signed in to the class'):
-		 res.status(200).send('sadly there are no more open spots in this class. feel free to join the waiting list');
+		 res.status(222).send('sadly there are no more open spots in this class. feel free to join the waiting list');
 	}
 });
 
@@ -113,13 +114,10 @@ canRegister = (form, course) => {
 	var participantId = form.participantId
 	var courseId = form.courseId
 	 if(course.id === form.courseId) {
-		 console.log('cur: '+course.currentlyRegistered+' max: '+course.maxParticipants)
 		  if(course.currentlyRegistered < course.maxParticipants)  {
-			  console.log('possible')
 			  course.currentlyRegistered++
 		  }
 		  else {
-			  console.log('impossible')
 			 return false
 		}
 	 }

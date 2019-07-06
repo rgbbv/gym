@@ -1,12 +1,14 @@
 import React from 'react'
 import {omit} from 'lodash'
-import { addParticipant, joinWaitingList } from '../actions/classActions';
+import { addParticipant } from '../actions/classActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom"
 
+const request = require("request");
 
 class Table extends React.Component {
+   state = { email: [] }
 
  register = (courseId) => {
    var participantId = this.props.table.id
@@ -15,7 +17,18 @@ class Table extends React.Component {
 
  waitingRegister = (courseId) => {
     var participantId = this.props.table.id
-    this.props.joinWaitingList(participantId, courseId)
+    var email = this.state.email
+    request.post("http://localhost:3333/waiting",
+     {form:{ participantId: participantId, courseId: courseId, email: email}},
+     function(error, response, body) {
+     if (error) {
+       alert('currently we are unable to add you to the waiting list. please try later')
+     }
+     else {
+       alert(response.body)
+     }
+   })
+   this.setState({email: ''})
  }
 
 
@@ -28,12 +41,27 @@ class Table extends React.Component {
     })
  }
 
+ onChange(event) {
+   this.setState({email: event.target.value});
+ }
 
 
  renderTableData() {
     if (this.props.table === null) return ''
     return this.props.table.classes.map((cell, index) => {
        const { id, title, day, hour, duration, maxParticipants, currentlyRegistered } = cell //destructuring
+       if (maxParticipants-currentlyRegistered) {
+         return (
+            <tr key={id}>
+               <td>{title}</td>
+               <td>{day}</td>
+               <td>{hour}</td>
+               <td>{duration}</td>
+               <td>{maxParticipants-currentlyRegistered+'/'+maxParticipants}</td>
+               <button onClick={this.register.bind(this, id)} type="submit">register</button>
+            </tr>
+         )
+       }
        return (
           <tr key={id}>
              <td>{title}</td>
@@ -41,8 +69,9 @@ class Table extends React.Component {
              <td>{hour}</td>
              <td>{duration}</td>
              <td>{maxParticipants-currentlyRegistered+'/'+maxParticipants}</td>
-             <button onClick={this.register.bind(this, id)} type="submit">register</button>
-             <button onClick={this.waitingRegister.bind(this, id)} type="submit">waiting list</button>
+             <button onClick={this.waitingRegister.bind(this, id)} type="submit">enter waiting list</button>
+             <input type="text" placeholder="enter email" onChange={this.onChange.bind(this)} value={this.state.email}
+            />
           </tr>
        )
     })
@@ -69,4 +98,4 @@ Table.propTypes = {
  };
 
  
- export default connect(null, { addParticipant, joinWaitingList })(withRouter(Table));
+ export default connect(null, { addParticipant })(withRouter(Table));

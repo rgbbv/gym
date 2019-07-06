@@ -5,7 +5,8 @@ const Thankyou = () => {
   return (
     <div>
       <div className="container">
-        <h4 className="center">Thank you for using our system</h4>
+        <h2 className="center">you have been registered to the class</h2>
+        <p>Thank you for using our system</p>
         <li><Link to='/'>Main page</Link></li>
       </div>
     </div>

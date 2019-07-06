@@ -1,4 +1,4 @@
-import { GET_CLASSES, ADD_PARTICIPANT, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE  } from '../actions/types';
+import { GET_CLASSES, ADD_PARTICIPANT, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE } from '../actions/types';
 
 
 const initialState = {
