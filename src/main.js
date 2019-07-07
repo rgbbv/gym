@@ -17,67 +17,6 @@ var connection = mysql.createConnection({
 	  return;
 	}
 })
-  
-
-
-calendar = {
-    classes: [
-    {
-      id: ID.IdMaker(),
-      title: 'title 1',
-	  day: 'Wednesday',
-	  hour: '12:30',
-	  duration: '2.5 hours',
-	  maxParticipants: 5,
-	  currentlyRegistered: 2
-    },
-    {
-		id: ID.IdMaker(),
-		title: 'title 2',
-		day: 'Sunday',
-		hour: '10:00',
-		duration: '2 hourse',
-		maxParticipants: 10,
-		currentlyRegistered: 7
-	  },
-	  {
-		id: ID.IdMaker(),
-		title: 'title 3',
-		day: 'Tuesday',
-		hour: '16:30',
-		duration: '1 hour',
-		maxParticipants: 9,
-		currentlyRegistered: 8
-	  },
-	  {
-		id: ID.IdMaker(),
-		title: 'title 4',
-		day: 'Thursday',
-		hour: '20:15',
-		duration: '1.5 hourse',
-		maxParticipants: 6,
-		currentlyRegistered: 6
-	  }
-  ]
-}
-waitingLists = [
-	  {
-		  id: calendar.classes[0].id,
-		  waiting: []
-	  },
-	  {
-		  id: calendar.classes[1].id,
-		  waiting: []
-	  },
-	  {
-		  id: calendar.classes[2].id,
-		  waiting: []
-	  },
-	  {
-		  id: calendar.classes[3].id,
-		  waiting: []
-	  }
-  ]
 
 var app = express();
 app.use(bodypar.urlencoded({ extended: false }))
