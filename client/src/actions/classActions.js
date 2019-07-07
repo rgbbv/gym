@@ -1,4 +1,4 @@
-import { GET_CLASSES, FAILED_REGISTER, PUT_ID, REGISTER_COMPLETE } from './types';
+import { GET_CLASSES, PUT_ID, FAILED_REGISTER, START_LOGIN, FINISHED_LOGIN, REGISTER_COMPLETE } from './types';
 
 const request = require("request");
 
@@ -9,6 +9,18 @@ export const putId = () => dispatch => {
   dispatch({
     type: PUT_ID,
     payload: currentUserId 
+  })
+}
+
+export const startLogin = () => dispatch => {
+  dispatch({
+    type: START_LOGIN
+  })
+}
+
+export const finishedLogin = () => dispatch => {
+  dispatch({
+    type: FINISHED_LOGIN
   })
 }
 
@@ -23,7 +35,7 @@ export const getClasses = () => dispatch => {
         else {
             dispatch({
                 type: GET_CLASSES,
-                payload: JSON.parse(body).classes
+                payload: JSON.parse(body)
               })
         }
       })

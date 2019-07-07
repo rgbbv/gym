@@ -3,7 +3,7 @@ import './App.css'
 import { Provider } from 'react-redux'
 import { BrowserRouter, Switch } from 'react-router-dom'
 import store from './store';
-import { putId } from './actions/classActions';
+import { putId, startLogin } from './actions/classActions';
 import { Route } from 'react-router'
 import Home from './components/Home'
 import Thankyou from './components/Thankyou'
@@ -11,6 +11,7 @@ import Thankyou from './components/Thankyou'
 class App extends React.Component {
   componentWillMount() {
     store.dispatch(putId)
+    store.dispatch(startLogin)
   }
 
   render() {

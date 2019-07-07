@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getClasses, putId } from '../actions/classActions';
+import { getClasses, startLogin, finishedLogin } from '../actions/classActions';
 import Table from './Table'
+import store from '../store'
 
 const request = require("request");
 
-class Classes extends Component {
+class Classes extends React.Component {
   state = { loggedIn: false, name: '', email: ''}
-
   componentWillMount() {
     this.props.getClasses()
   }
@@ -33,17 +33,17 @@ class Classes extends Component {
     request.post("http://localhost:3333/login",
      {form:{ id: currentUserId, name: name, email: email}},
      function(error, response, body) {
-     if (error) { throw error
-     }
+     if (error) { throw error }
      else {
-       alert(response.body)
      }
     })
-    this.setState({loggedIn: true, name: '', email: ''})
+    this.props.finishedLogin()
+    this.setState({name: '', email: ''})
   }
 
 render() {
-  if (!this.state.loggedIn) {
+  var checkLogin = store.getState().classes.loggedIn
+  if (!checkLogin) {
     return (
       <div>
         <h1>Welcome to the gym system</h1>
@@ -57,7 +57,7 @@ render() {
   }
     return (
       <div>
-        <h1>classes</h1>
+        <h1>registration system</h1>
         <Table table={this.props.classes} />
       </div>
     )
@@ -67,12 +67,13 @@ render() {
 
 Classes.propTypes = {
   getClasses: PropTypes.func.isRequired,
-  putId: PropTypes.func.isRequired
+  startLogin: PropTypes.func.isRequired,
+  finishedLogin: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   classes: state.classes,
-  registered: state.registered
+  participants: state.participants
 });
 
-export default connect(mapStateToProps, { getClasses, putId })(Classes);
+export default connect(mapStateToProps, { getClasses, startLogin, finishedLogin  })(Classes);

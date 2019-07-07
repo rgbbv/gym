@@ -101,24 +101,25 @@ app.all('/register', (req, res) => {
 
 	if (req.method === 'POST') {
 		var que = 'INSERT IGNORE INTO registered (courseId, participantId) VALUES (?, ?)'
-		connection.query(que, [[req.body.courseId, req.body.participantId]], 
+		connection.query(que, [req.body.courseId, req.body.participantId], 
 		(err) =>  {
 			 if (err) res.status(222).send('sadly there are no more open spots in this class. feel free to join the waiting list')
 		})
+		res.send('successfully registered')
 	}
 });
 
 app.get('/classes', (req, res) => {
 	var que = 'SELECT * FROM classes'
 	connection.query(que, (err,rows) => { if(err) throw err
-		var secondQue = 'SELECT courseId, COUNT(*) FROM gymdb.registered group by courseId'
-		connection.query(secondQue, (err2, rows2) => { if(err2) throw err2
-		res.send({rows, rows2})})})
+		var secondQue = 'SELECT courseId, COUNT(*) AS count FROM gymdb.registered group by courseId'
+		connection.query(secondQue, (err2, rowsNum) => { if(err2) throw err2
+		res.send({rows, rowsNum})})})
 });
 
-app.get('/login', (req, res) => {
-	var que = 'INSERT IGNORE INTO users (id,email,user) VALUES (?,?,?)'
-	connection.query(que, [req.body.id, req.body.email, req.body.user], (err) => { if (err) throw err })
+app.post('/login', (req, res) => {
+	var que = 'INSERT IGNORE INTO users (id,name,email) VALUES (?,?,?)'
+	connection.query(que, [req.body.id, req.body.name, req.body.email], (err) => { if (err) throw err })
 	res.send('logged in')
 })
 

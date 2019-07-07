@@ -1,4 +1,4 @@
-import { GET_CLASSES, ADD_PARTICIPANT, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE } from '../actions/types';
+import { GET_CLASSES, ADD_PARTICIPANT, START_LOGIN, FINISHED_LOGIN, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE } from '../actions/types';
 
 
 const initialState = {
@@ -11,7 +11,8 @@ export default function(state = initialState, action) {
     case GET_CLASSES:
       return {
         ...state,
-        classes: action.payload
+        classes: action.payload.rows,
+        participants: action.payload.rowsNum
       };
     case ADD_PARTICIPANT:
       return {
@@ -37,6 +38,16 @@ export default function(state = initialState, action) {
         registered: true,
         classes: state.classes.map( cur=> classAdder(action.payload,cur)),
         push: action.push
+      }
+    case START_LOGIN:
+      return {
+        ...state,
+        loggedIn: false
+      }
+    case FINISHED_LOGIN:
+      return {
+        ...state,
+        loggedIn: true
       }
     default:
       return state;

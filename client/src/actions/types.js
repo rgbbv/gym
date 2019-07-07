@@ -3,3 +3,5 @@ export const ADD_PARTICIPANT = 'ADD_PARTICIPANT';
 export const PUT_ID = 'PUT_ID';
 export const REGISTER_COMPLETE = 'REGISTER_COMPLETE';
 export const FAILED_REGISTER = 'FAILED_REGISTER';
+export const START_LOGIN = 'START_LOGIN';
+export const FINISHED_LOGIN = 'FINISHED_LOGIN';
