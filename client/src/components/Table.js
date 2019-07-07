@@ -19,10 +19,10 @@ class Table extends React.Component {
  
 
  waitingRegister = (courseId) => {
-    var participantId = this.props.table.id
-    var email = this.state.email
+    var userIdKey = 'currentUserId'
+    var currentId = localStorage.getItem(userIdKey)
     request.post("http://localhost:3333/waiting",
-     {form:{ participantId: participantId, courseId: courseId, email: email}},
+     {form:{ participantId: currentId, courseId: courseId}},
      function(error, response, body) {
      if (error) {
        alert('currently we are unable to add you to the waiting list. please try later')
@@ -50,20 +50,22 @@ registered = (id) => {
 
 dayMaker = (day) => {
   switch(day) {
-    case 1:
+    case '0':
+      return 'Sunday'
+    case '1':
       return 'Monday'
-    case 2:
+    case '2':
       return 'Tuesday'
-    case 3:
+    case '3':
       return 'Wednesday'
-    case 4:
+    case '4':
       return 'Thursday'
-    case 5:
+    case '5':
       return 'Friday'
-    case 6:
+    case '6':
       return 'Saturday'
     default:
-      return 'Sunday'
+      return 'error'
   }
 }
  renderTableData() {
@@ -94,7 +96,7 @@ dayMaker = (day) => {
                <td>{instructor}</td>
                <td>{price}</td>
                <td>{duration}</td>
-               <td>{day}</td>
+               <td>{this.dayMaker(day)}</td>
                <td>{hour.substring(0,5  )}</td>
              <td>{maxNumOfParticipants-currentlyRegistered+'/'+maxNumOfParticipants}</td>
              <button onClick={this.waitingRegister.bind(this, id)} type="submit">enter waiting list</button>

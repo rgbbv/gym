@@ -58,7 +58,7 @@ render() {
   }
     return (
       <div>
-        <h1>registration system</h1>
+        <h1>Registration system</h1>
         <Table table={this.props.classes} />
       </div>
     )
