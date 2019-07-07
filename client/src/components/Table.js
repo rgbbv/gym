@@ -4,6 +4,7 @@ import { addParticipant } from '../actions/classActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom"
+import './Table.css'
 
 const request = require("request");
 
@@ -39,6 +40,7 @@ class Table extends React.Component {
     if (this.props.table.classes.length === 0) return 'loading...'
     let header = Object.keys(omit(this.props.table.classes[0], ['id', 'maxNumOfParticipants']))
     header.push('spots left')
+    header.push(' ')
     return header.map((key, index) => {
        return <th key={index}>{key.toUpperCase()}</th>
     })
@@ -85,7 +87,8 @@ dayMaker = (day) => {
                <td>{this.dayMaker(day)}</td>
                <td>{hour.substring(0,5  )}</td>
                <td>{maxNumOfParticipants-currentlyRegistered+'/'+maxNumOfParticipants}</td>
-               <button onClick={this.register.bind(this, id)} type="submit">register</button>
+               <td><button className="button" onClick={this.register.bind(this, id)}
+                type="submit">register</button></td>
             </tr>
          )
        }
@@ -99,7 +102,9 @@ dayMaker = (day) => {
                <td>{this.dayMaker(day)}</td>
                <td>{hour.substring(0,5  )}</td>
              <td>{maxNumOfParticipants-currentlyRegistered+'/'+maxNumOfParticipants}</td>
-             <button onClick={this.waitingRegister.bind(this, id)} type="submit">enter waiting list</button>
+             <td><button className="button"
+             onClick={this.waitingRegister.bind(this, id)}
+              type="submit">enter waiting list</button></td>
           </tr>
        )
     })
@@ -108,8 +113,7 @@ dayMaker = (day) => {
 
     return (
        <div>
-          <h1 id='title'>Classes</h1>
-          <table id='Gym'>
+          <table id='classes'>
              <tbody>
                 <tr>{this.renderTableHeader()}</tr>
                 {this.renderTableData()}

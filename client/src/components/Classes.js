@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getClasses, startLogin, finishedLogin } from '../actions/classActions';
 import Table from './Table'
 import store from '../store'
+import './Classes.css'
 
 const request = require("request");
 
@@ -46,19 +47,24 @@ render() {
   var checkLogin = store.getState().classes.loggedIn
   if (!checkLogin) {
     return (
-      <div>
-        <h1>Welcome to the gym system</h1>
-        <input type="text" placeholder="enter username" onChange={this.onChangeName.bind(this)}
+      <div class="welcomer">
+        <h4>Welcome to the gym system</h4>
+        
+        <form class="form">
+          <input type="text" placeholder="Username" onChange={this.onChangeName.bind(this)}
          value={this.state.name}/>
-        <input type="text" placeholder="enter email" onChange={this.onChangeEmail.bind(this)}
+          <input type="email" placeholder="Email" onChange={this.onChangeEmail.bind(this)}
          value={this.state.email}/>
-        <button onClick={this.login.bind(this)} type="submit">login</button>
+          <button onClick={this.login.bind(this)} type="submit" id="login-button">Login</button>
+        </form>
       </div>
     )
   }
     return (
       <div>
-        <h1>Registration system</h1>
+        <header>
+          <h1>Registration system</h1>
+        </header>
         <Table table={this.props.classes} />
       </div>
     )
