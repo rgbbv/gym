@@ -13,8 +13,10 @@ export const putId = () => dispatch => {
 }
 
 export const startLogin = () => dispatch => {
+  const userIdKey = 'currentUserId'
   dispatch({
-    type: START_LOGIN
+    type: START_LOGIN,
+    payload: localStorage.getItem(userIdKey) ? true : false
   })
 }
 

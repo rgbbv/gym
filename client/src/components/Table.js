@@ -95,7 +95,7 @@ dayMaker = (day) => {
                <td>{price}</td>
                <td>{duration}</td>
                <td>{day}</td>
-               <td>{hour}</td>
+               <td>{hour.substring(0,5  )}</td>
              <td>{maxNumOfParticipants-currentlyRegistered+'/'+maxNumOfParticipants}</td>
              <button onClick={this.waitingRegister.bind(this, id)} type="submit">enter waiting list</button>
           </tr>

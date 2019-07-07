@@ -8,9 +8,10 @@ import store from '../store'
 const request = require("request");
 
 class Classes extends React.Component {
-  state = { loggedIn: false, name: '', email: ''}
+  state = { name: '', email: ''}
   componentWillMount() {
     this.props.getClasses()
+    this.props.startLogin()
   }
 
 

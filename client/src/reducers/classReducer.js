@@ -42,7 +42,7 @@ export default function(state = initialState, action) {
     case START_LOGIN:
       return {
         ...state,
-        loggedIn: false
+        loggedIn: action.payload
       }
     case FINISHED_LOGIN:
       return {
