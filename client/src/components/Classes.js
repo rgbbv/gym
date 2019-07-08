@@ -31,18 +31,26 @@ class Classes extends React.Component {
   login = () => {
     var name = this.state.name
     var email = this.state.email
-    var userIdKey = 'currentUserId'
-    var currentUserId = localStorage.getItem(userIdKey) || this.idGenerator()
-    localStorage.setItem(userIdKey, currentUserId)
-    request.post("http://localhost:3333/login",
-     {form:{ id: currentUserId, name: name, email: email}},
-     function(error, response, body) {
-     if (error) { throw error }
-     else {
-     }
-    })
-    this.props.finishedLogin()
-    this.setState({name: '', email: ''})
+    if (name.length === 0 || email.length === 0) {
+      alert('please make sure you filled both fields before pressing login');
+    }
+    else if (!email.includes('@') || !email.split('@')[1].includes('.')) {
+      alert('please enter a real email')
+    }
+    else {
+      var userIdKey = 'currentUserId'
+      var currentUserId = localStorage.getItem(userIdKey) || this.idGenerator()
+      localStorage.setItem(userIdKey, currentUserId)
+      request.post("http://localhost:3333/login",
+      {form:{ id: currentUserId, name: name, email: email}},
+      function(error, response, body) {
+      if (error) { throw error }
+      else {
+      }
+      })
+      this.props.finishedLogin()
+      this.setState({name: '', email: ''})
+    }
   }
 
 render() {

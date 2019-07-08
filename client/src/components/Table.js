@@ -1,6 +1,6 @@
 import React from 'react'
 import {omit} from 'lodash'
-import { addParticipant, getPressed } from '../actions/classActions';
+import { addParticipant } from '../actions/classActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom"
