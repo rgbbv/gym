@@ -10,7 +10,7 @@ import store from '../store';
 const request = require("request");
 
 class Table extends React.Component {
-   state = { email: [], pressed: []}
+   state = { email: [], register: [], wait: []}
 
  register = (courseId) => {
    var userIdKey = 'currentUserId'
@@ -74,8 +74,9 @@ dayMaker = (day) => {
 }
 
 isRegistered = (courseId, freeSpace) => {
-    var isPressed = this.props.table.pressed.reduce((acc,cur) => acc||(cur.courseId === courseId), false)
-    if (!isPressed) {
+    var alreadyRegistered = this.props.table.register.reduce((acc,cur) => acc||(cur.courseId === courseId), false)
+    var alreadyWaiting = this.props.table.wait.reduce((acc,cur) => acc||(cur.courseId === courseId), false)
+    if (!alreadyRegistered && !alreadyWaiting) {
       if (freeSpace) {
         return <button className="button" onClick={this.register.bind(this, courseId)}
         type="submit">register</button>
@@ -86,7 +87,7 @@ isRegistered = (courseId, freeSpace) => {
         type="submit">enter waiting list</button>
       }
     }
-    return 'Already listed to this class';
+   return alreadyRegistered ? 'Already registered' : 'Already on the waiting list'
   }
 
  renderTableData() {

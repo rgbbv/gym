@@ -90,7 +90,8 @@ Classes.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  pressed: state.pressed,
+  register: state.register,
+  wait: state.wait,
   classes: state.classes,
   participants: state.participants,
 });

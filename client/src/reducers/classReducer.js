@@ -53,7 +53,8 @@ export default function(state = initialState, action) {
     case GET_PRESSED:
       return {
         ...state,
-        pressed: action.payload
+        register: action.payload.register,
+        wait: action.payload.wait,
       }
     default:
       return state;

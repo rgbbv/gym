@@ -45,10 +45,13 @@ app.all('/register', (req, res) => {
 	}
 	if (req.method === 'GET') {
 		var que = 'SELECT courseId FROM registered WHERE participantId = ?'
-		que = que.concat(' UNION SELECT courseId FROM waiting WHERE participantId = ?')
-		connection.query(que, [req.query.participantId, req.query.participantId], (err, rows) => {
-			 if (err) throw err
-			 res.send(rows)
+		connection.query(que, [req.query.participantId], (err, rowsRegistered) => {
+			if (err) throw err
+			var que = 'SELECT courseId FROM waiting WHERE participantId = ?'
+			connection.query(que, [req.query.participantId], (err2, rowsWaiting) => {
+				if (err2) throw err
+				res.send({register: rowsRegistered, wait: rowsWaiting})
+			})
 		})
 	}
 })
@@ -56,7 +59,7 @@ app.all('/register', (req, res) => {
 app.get('/classes', (req, res) => {
 	var que = 'SELECT * FROM classes'
 	connection.query(que, (err,rows) => { if(err) throw err
-		var secondQue = 'SELECT courseId, COUNT(*) AS count FROM gymdb.registered group by courseId'
+		var secondQue = 'SELECT courseId, COUNT(*) AS count FROM registered group by courseId'
 		connection.query(secondQue, (err2, rowsNum) => { if(err2) throw err2
 		res.send({rows, rowsNum})})})
 });
