@@ -44,13 +44,10 @@ app.all('/register', (req, res) => {
 		res.send('successfully registered')
 	}
 	if (req.method === 'GET') {
-		console.log(req.query)
 		var que = 'SELECT courseId FROM registered WHERE participantId = ?'
 		que = que.concat(' UNION SELECT courseId FROM waiting WHERE participantId = ?')
-		console.log(que)
 		connection.query(que, [req.query.participantId, req.query.participantId], (err, rows) => {
 			 if (err) throw err
-			 console.log(rows)
 			 res.send(rows)
 		})
 	}

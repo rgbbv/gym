@@ -21,9 +21,6 @@ class Table extends React.Component {
  
 
  waitingRegister = (courseId) => {
-  var pressed = this.state.pressed
-  pressed.push({courseId: courseId})
-  this.setState({ pressed: pressed})
   var userIdKey = 'currentUserId'
   var currentId = localStorage.getItem(userIdKey)
   request.post("http://localhost:3333/waiting",
@@ -37,6 +34,7 @@ class Table extends React.Component {
     }
   })
   this.setState({email: ''})
+  window.location.reload();
  }
 
 
