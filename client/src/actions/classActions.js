@@ -1,5 +1,5 @@
-import { GET_CLASSES, PUT_ID, GET_REGISTERED,
-   FAILED_REGISTER, START_LOGIN, FINISHED_LOGIN, REGISTER_COMPLETE } from './types';
+import { GET_CLASSES, PUT_ID, FAILED_REGISTER,
+   START_LOGIN, FINISHED_LOGIN, REGISTER_COMPLETE } from './types';
 
 const request = require("request");
 
@@ -24,22 +24,6 @@ export const startLogin = () => dispatch => {
 export const finishedLogin = () => dispatch => {
   dispatch({
     type: FINISHED_LOGIN
-  })
-}
-
-export const getRegistered = () => dispatch => {
-  const userIdKey = 'currentUserId'
-  const participantId = localStorage.getItem(userIdKey)
-  var address = "http://localhost:3333/register"
-  address = address.concat('?participant='+participantId)
-  request.get(address, function(error, response, body) {
-    if (error) throw error
-    else {
-      dispatch({
-        type: GET_REGISTERED,
-        payload: body
-      })
-    }
   })
 }
 

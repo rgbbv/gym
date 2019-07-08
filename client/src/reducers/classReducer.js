@@ -1,5 +1,5 @@
-import { GET_CLASSES, ADD_PARTICIPANT, GET_REGISTERED,
-   START_LOGIN, FINISHED_LOGIN, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE } from '../actions/types';
+import { GET_CLASSES, ADD_PARTICIPANT, START_LOGIN,
+   FINISHED_LOGIN, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE } from '../actions/types';
 
 
 const initialState = {
@@ -49,11 +49,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loggedIn: true
-      }
-    case GET_REGISTERED:
-      return {
-        ...state,
-        getRegistered: action.payload
       }
     default:
       return state;

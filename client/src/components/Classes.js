@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getClasses, startLogin, finishedLogin, getRegistered } from '../actions/classActions';
+import { getClasses, startLogin, finishedLogin } from '../actions/classActions';
 import Table from './Table'
 import store from '../store'
 import './Classes.css'
@@ -84,4 +84,4 @@ const mapStateToProps = state => ({
   participants: state.participants
 });
 
-export default connect(mapStateToProps, { getClasses, startLogin, finishedLogin, getRegistered })(Classes);
+export default connect(mapStateToProps, { getClasses, startLogin, finishedLogin })(Classes);

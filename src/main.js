@@ -43,14 +43,6 @@ app.all('/register', (req, res) => {
 		})
 		res.send('successfully registered')
 	}
-	if (req.method === 'GET') {
-		var que = 'SELECT courseId FROM registered WHERE participantId = ?'
-		connection.query(que, [req.query.participantId], (err, rows) => {
-			 if (err) throw err
-			 console.log(rows)
-			 res.send(rows)
-		})
-	}
 })
 
 app.get('/classes', (req, res) => {
