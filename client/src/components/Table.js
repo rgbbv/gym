@@ -86,7 +86,7 @@ isRegistered = (courseId, freeSpace) => {
         type="submit">enter waiting list</button>
       }
     }
-    return;
+    return 'Already listed to this class';
   }
 
  renderTableData() {
