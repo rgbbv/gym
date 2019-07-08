@@ -1,4 +1,4 @@
-import { GET_CLASSES, ADD_PARTICIPANT, START_LOGIN,
+import { GET_CLASSES, ADD_PARTICIPANT, START_LOGIN, GET_PRESSED,
    FINISHED_LOGIN, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE } from '../actions/types';
 
 
@@ -49,6 +49,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loggedIn: true
+      }
+    case GET_PRESSED:
+      return {
+        ...state,
+        pressed: action.payload
       }
     default:
       return state;

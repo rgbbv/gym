@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
 	host     : 'localhost',
 	user     : 'root',
 	password : '1234',
-	database : 'gymDB'
+	database : 'gymdb'
   });
 
   connection.connect(function(err) {
@@ -42,6 +42,17 @@ app.all('/register', (req, res) => {
 			 if (err) res.status(222).send('sadly there are no more open spots in this class. feel free to join the waiting list')
 		})
 		res.send('successfully registered')
+	}
+	if (req.method === 'GET') {
+		console.log(req.query)
+		var que = 'SELECT courseId FROM registered WHERE participantId = ?'
+		que = que.concat(' UNION SELECT courseId FROM waiting WHERE participantId = ?')
+		console.log(que)
+		connection.query(que, [req.query.participantId, req.query.participantId], (err, rows) => {
+			 if (err) throw err
+			 console.log(rows)
+			 res.send(rows)
+		})
 	}
 })
 

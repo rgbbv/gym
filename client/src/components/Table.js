@@ -1,18 +1,18 @@
 import React from 'react'
 import {omit} from 'lodash'
-import { addParticipant } from '../actions/classActions';
+import { addParticipant, getPressed } from '../actions/classActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom"
 import './Table.css'
+import store from '../store';
 
 const request = require("request");
 
 class Table extends React.Component {
-   state = { email: [], registered: []}
+   state = { email: [], pressed: []}
 
  register = (courseId) => {
-   localStorage.setItem(courseId, true)
    var userIdKey = 'currentUserId'
    var currentId = localStorage.getItem(userIdKey)
    this.props.addParticipant(currentId, courseId, this.props.history)
@@ -21,20 +21,22 @@ class Table extends React.Component {
  
 
  waitingRegister = (courseId) => {
-    localStorage.setItem(courseId, true)
-    var userIdKey = 'currentUserId'
-    var currentId = localStorage.getItem(userIdKey)
-    request.post("http://localhost:3333/waiting",
-     {form:{ participantId: currentId, courseId: courseId}},
-     function(error, response, body) {
-     if (error) {
-       alert('currently we are unable to add you to the waiting list. please try later')
-     }
-     else {
-       alert(response.body)
-     }
-   })
-   this.setState({email: ''})
+  var pressed = this.state.pressed
+  pressed.push({courseId: courseId})
+  this.setState({ pressed: pressed})
+  var userIdKey = 'currentUserId'
+  var currentId = localStorage.getItem(userIdKey)
+  request.post("http://localhost:3333/waiting",
+    {form:{ participantId: currentId, courseId: courseId}},
+    function(error, response, body) {
+    if (error) {
+      alert('currently we are unable to add you to the waiting list. please try later')
+    }
+    else {
+      alert(response.body)
+    }
+  })
+  this.setState({email: ''})
  }
 
 
@@ -74,8 +76,8 @@ dayMaker = (day) => {
 }
 
 isRegistered = (courseId, freeSpace) => {
-    var alreadyPressed = localStorage.getItem(courseId)
-    if (!alreadyPressed) {
+    var isPressed = this.props.table.pressed.reduce((acc,cur) => acc||(cur.courseId === courseId), false)
+    if (!isPressed) {
       if (freeSpace) {
         return <button className="button" onClick={this.register.bind(this, courseId)}
         type="submit">register</button>
@@ -95,6 +97,7 @@ isRegistered = (courseId, freeSpace) => {
        const { id, name, description, price, duration, maxNumOfParticipants,
          instructor, day, hour } = cell //destructuring
          var currentlyRegistered = this.registered(id)
+         var alreadyPressed = store.getState().pressed
          var freeSpace = maxNumOfParticipants-currentlyRegistered
          return (
             <tr key={id}>
@@ -106,7 +109,7 @@ isRegistered = (courseId, freeSpace) => {
                <td>{this.dayMaker(day)}</td>
                <td>{hour.substring(0,5  )}</td>
                <td>{maxNumOfParticipants-currentlyRegistered+'/'+maxNumOfParticipants}</td>
-               <td>{this.isRegistered(id, freeSpace)}</td>
+               <td>{this.isRegistered(id, freeSpace, alreadyPressed)}</td>
             </tr>
          )
      })

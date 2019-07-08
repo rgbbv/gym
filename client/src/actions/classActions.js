@@ -1,7 +1,21 @@
-import { GET_CLASSES, PUT_ID, FAILED_REGISTER,
+import { GET_CLASSES, PUT_ID, FAILED_REGISTER, GET_PRESSED,
    START_LOGIN, FINISHED_LOGIN, REGISTER_COMPLETE } from './types';
 
 const request = require("request");
+
+export const getPressed = () => dispatch => {
+  const userIdKey = 'currentUserId'
+  const currentUserId = localStorage.getItem(userIdKey) || idGenerator()
+  request.get("http://localhost:3333/register?participantId="+currentUserId, function(error, response, body) {
+    if (error) throw error
+    else {
+      dispatch({
+        type: GET_PRESSED,
+        payload: JSON.parse(body)
+      })
+    }
+  })
+}
 
 export const putId = () => dispatch => {
   const userIdKey = 'currentUserId'
