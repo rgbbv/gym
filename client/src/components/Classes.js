@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getClasses, startLogin, finishedLogin } from '../actions/classActions';
+import { getClasses, startLogin, finishedLogin, getRegistered } from '../actions/classActions';
 import Table from './Table'
 import store from '../store'
 import './Classes.css'
@@ -10,6 +10,7 @@ const request = require("request");
 
 class Classes extends React.Component {
   state = { name: '', email: ''}
+
   componentWillMount() {
     this.props.getClasses()
     this.props.startLogin()
@@ -75,7 +76,7 @@ render() {
 Classes.propTypes = {
   getClasses: PropTypes.func.isRequired,
   startLogin: PropTypes.func.isRequired,
-  finishedLogin: PropTypes.func.isRequired
+  finishedLogin: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -83,4 +84,4 @@ const mapStateToProps = state => ({
   participants: state.participants
 });
 
-export default connect(mapStateToProps, { getClasses, startLogin, finishedLogin  })(Classes);
+export default connect(mapStateToProps, { getClasses, startLogin, finishedLogin, getRegistered })(Classes);

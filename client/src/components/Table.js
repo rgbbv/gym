@@ -9,9 +9,10 @@ import './Table.css'
 const request = require("request");
 
 class Table extends React.Component {
-   state = { email: [] }
+   state = { email: [], registered: []}
 
  register = (courseId) => {
+   localStorage.setItem(courseId, true)
    var userIdKey = 'currentUserId'
    var currentId = localStorage.getItem(userIdKey)
    this.props.addParticipant(currentId, courseId, this.props.history)
@@ -20,6 +21,7 @@ class Table extends React.Component {
  
 
  waitingRegister = (courseId) => {
+    localStorage.setItem(courseId, true)
     var userIdKey = 'currentUserId'
     var currentId = localStorage.getItem(userIdKey)
     request.post("http://localhost:3333/waiting",
@@ -70,13 +72,30 @@ dayMaker = (day) => {
       return 'error'
   }
 }
+
+isRegistered = (courseId, freeSpace) => {
+    var alreadyPressed = localStorage.getItem(courseId)
+    if (!alreadyPressed) {
+      if (freeSpace) {
+        return <button className="button" onClick={this.register.bind(this, courseId)}
+        type="submit">register</button>
+      }
+      else {
+        return <button className="button"
+        onClick={this.waitingRegister.bind(this, courseId)}
+        type="submit">enter waiting list</button>
+      }
+    }
+    return;
+  }
+
  renderTableData() {
     if (this.props.table === null) return ''
     return this.props.table.classes.map((cell, index) => {
        const { id, name, description, price, duration, maxNumOfParticipants,
          instructor, day, hour } = cell //destructuring
          var currentlyRegistered = this.registered(id)
-       if (maxNumOfParticipants-currentlyRegistered) {
+         var freeSpace = maxNumOfParticipants-currentlyRegistered
          return (
             <tr key={id}>
                <td>{name}</td>
@@ -87,28 +106,14 @@ dayMaker = (day) => {
                <td>{this.dayMaker(day)}</td>
                <td>{hour.substring(0,5  )}</td>
                <td>{maxNumOfParticipants-currentlyRegistered+'/'+maxNumOfParticipants}</td>
-               <td><button className="button" onClick={this.register.bind(this, id)}
-                type="submit">register</button></td>
+               <td>{this.isRegistered(id, freeSpace)}</td>
             </tr>
          )
-       }
-       return (
-            <tr key={id}>
-               <td>{name}</td>
-               <td>{description}</td>
-               <td>{instructor}</td>
-               <td>{price}</td>
-               <td>{duration}</td>
-               <td>{this.dayMaker(day)}</td>
-               <td>{hour.substring(0,5  )}</td>
-             <td>{maxNumOfParticipants-currentlyRegistered+'/'+maxNumOfParticipants}</td>
-             <td><button className="button"
-             onClick={this.waitingRegister.bind(this, id)}
-              type="submit">enter waiting list</button></td>
-          </tr>
-       )
-    })
+     })
  }
+
+ 
+  
  render() {
 
     return (

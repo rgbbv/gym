@@ -1,5 +1,3 @@
-
-var ID = {IdMaker: () => '_' + Math.random().toString(36).substr(2, 9)};
 var express = require('express');
 var bodypar = require('body-parser');
 var mysql = require('mysql');
@@ -29,7 +27,6 @@ app.use((req, res, next) => {
 });
 
 app.post('/waiting', (req, res) => {
-	console.log(req.body)
 	var que = 'INSERT IGNORE INTO waiting (courseId, participantId) VALUES (?, ?)'
 	connection.query(que, [req.body.courseId, req.body.participantId], (err) => { if(err) throw err })
 	res.send('you have been added to the waiting list')
@@ -46,7 +43,15 @@ app.all('/register', (req, res) => {
 		})
 		res.send('successfully registered')
 	}
-});
+	if (req.method === 'GET') {
+		var que = 'SELECT courseId FROM registered WHERE participantId = ?'
+		connection.query(que, [req.query.participantId], (err, rows) => {
+			 if (err) throw err
+			 console.log(rows)
+			 res.send(rows)
+		})
+	}
+})
 
 app.get('/classes', (req, res) => {
 	var que = 'SELECT * FROM classes'
