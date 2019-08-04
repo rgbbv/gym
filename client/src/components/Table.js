@@ -23,7 +23,7 @@ class Table extends React.Component {
  waitingRegister = (courseId) => {
   var userIdKey = 'currentUserId'
   var currentId = localStorage.getItem(userIdKey)
-  request.post("http://localhost:3333/waiting",
+  request.post("http://localhost:3333/enterWaitingList",
     {form:{ participantId: currentId, courseId: courseId}},
     function(error, response, body) {
     if (error) {

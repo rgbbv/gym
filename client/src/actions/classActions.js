@@ -6,7 +6,7 @@ const request = require("request");
 export const getPressed = () => dispatch => {
   const userIdKey = 'currentUserId'
   const currentUserId = localStorage.getItem(userIdKey) || idGenerator()
-  request.get("http://localhost:3333/register?participantId="+currentUserId, function(error, response, body) {
+  request.get("http://localhost:3333/getListed?participantId="+currentUserId, function(error, response, body) {
     if (error) throw error
     else {
       dispatch({
@@ -44,7 +44,7 @@ export const finishedLogin = () => dispatch => {
 const idGenerator = () => '_' + Math.random().toString(36).substr(2, 9)
 
 export const getClasses = () => dispatch => {
-    request("http://localhost:3333/classes", function(error, response, body) {
+    request("http://localhost:3333/getClasses", function(error, response, body) {
         if (error) {
             // Print the error if one occurred 
             console.log('something went wrong on the request', error);
@@ -59,7 +59,7 @@ export const getClasses = () => dispatch => {
     };
 
 export const addParticipant = (participantId, courseId, history) => dispatch => {
-  request.post("http://localhost:3333/register", {form:{participantId: participantId, courseId: courseId}},
+  request.post("http://localhost:3333/toRegister", {form:{participantId: participantId, courseId: courseId}},
    function(error, response, body) {
     if (error) {
       dispatch({
