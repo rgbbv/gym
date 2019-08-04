@@ -11,4 +11,4 @@ getClasses = (req, res, connection) => {
     })
 }
 
-module.exports = getClasses
+module.exports = { getClasses }

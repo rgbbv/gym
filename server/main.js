@@ -1,10 +1,10 @@
 var express = require('express');
 var bodypar = require('body-parser');
 var mysql = require('mysql');
-const { enterWaitingList } = require('./HandleWaitingList')
-const { checkRegistered } = require('./HandleRegistered')
-const { getClasses } = require('./HandleClasses')
-const { login } = require('./HandleLogin')
+const HandleWaitingList = require('./HandleWaitingList')
+const HandleRegistered = require('./HandleRegistered')
+const HandleClasses = require('./HandleClasses')
+const HandleLogin = require('./HandleLogin')
 
 var connection = mysql.createConnection({
 	host     : 'localhost',
@@ -31,24 +31,24 @@ app.use((req, res, next) => {
 });
 
 app.post('/enterWaitingList', (req, res) => {
-	enterWaitingList(req, res, connection)
+	HandleWaitingList.enterWaitingList(req, res, connection)
 })
 
 
 app.post('/toRegister', (req, res) => {
-	checkRegistered(req, res, connection)
+	HandleRegistered.checkRegistered(req, res, connection)
 })
 
 app.get('/getListed', (req, res) => {
-	
+	HandleRegistered.getRegistered(req, res, connection)
 });
 
 app.get('/getClasses', (req, res) => {
-	getClasses(req, res, connection)
+	HandleClasses.getClasses(req, res, connection)
 });
 
 app.post('/login', (req, res) => {
-	login(req, res, connection)
+	HandleLogin.login(req, res, connection)
 })
 
 app.listen(3333);

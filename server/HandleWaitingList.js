@@ -15,4 +15,4 @@ getWaitingList = (req, res, connection, rowsRegistered) => {
 	})
 }
 
-module.exports = {enterWaitingList, getWaitingList}
+module.exports = { enterWaitingList, getWaitingList }

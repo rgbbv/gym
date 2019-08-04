@@ -7,4 +7,4 @@ login = (req, res, connection) => {
     })
 }
 
-module.exports = login
+module.exports =  { login }
