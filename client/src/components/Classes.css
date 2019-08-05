@@ -4,7 +4,9 @@ h1 { color: #CEF0;
     font-weight: normal; 
     line-height: 48px; margin: 0 0 50px; 
     text-align: center; 
-    text-shadow: 1px 1px 0.5px #082b34; }
+	text-shadow: 1px 1px 0.5px #082b34;
+	padding-top: 0.5em;
+ }
 
 
 h4 { color: #CEF0; 

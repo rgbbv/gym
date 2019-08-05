@@ -40,7 +40,8 @@ class Table extends React.Component {
 
  renderTableHeader() {
     if (this.props.table.classes.length === 0) return 'loading...'
-    let header = Object.keys(omit(this.props.table.classes[0], ['id', 'maxNumOfParticipants']))
+    let header = Object.keys(omit(this.props.table.classes[0], ['id', 'maxNumOfParticipants', 'description',
+   'duration']))
     header.push('spots left')
     header.push(' ')
     return header.map((key, index) => {
@@ -93,7 +94,7 @@ isRegistered = (courseId, freeSpace) => {
  renderTableData() {
     if (this.props.table === null) return ''
     return this.props.table.classes.map((cell, index) => {
-       const { id, name, description, price, duration, maxNumOfParticipants,
+       const { id, name, price, maxNumOfParticipants,
          instructor, day, hour } = cell //destructuring
          var currentlyRegistered = this.registered(id)
          var alreadyPressed = store.getState().pressed
@@ -101,14 +102,12 @@ isRegistered = (courseId, freeSpace) => {
          return (
             <tr key={id}>
                <td>{name}</td>
-               <td>{description}</td>
                <td>{instructor}</td>
                <td>{price}</td>
-               <td>{duration}</td>
                <td>{this.dayMaker(day)}</td>
                <td>{hour.substring(0,5  )}</td>
                <td>{maxNumOfParticipants-currentlyRegistered+'/'+maxNumOfParticipants}</td>
-               <td>{this.isRegistered(id, freeSpace, alreadyPressed)}</td>
+               <td id='regisButton'>{this.isRegistered(id, freeSpace, alreadyPressed)}</td>
             </tr>
          )
      })
