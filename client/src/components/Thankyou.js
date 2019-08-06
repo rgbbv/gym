@@ -4,13 +4,14 @@ import './Thankyou.css'
 
 const Thankyou = () => {
   return (
-      <div className="container">
-        <h2>you have been registered to the class</h2>
-        <h3>Thank you for using our system</h3>
-        <div className="wrapper">
-        <Link to='/' className="button2">Main page</Link>
-        </div>
-      </div>
+    <div className="jumbotron text-xs-center">
+      <h1 className="display-3">Thank You!</h1>
+      <p className="lead"><strong>Please check your email</strong> for further instructions on how to complete your account setup.</p>
+      <hr/>
+      <p className="lead">
+        <Link className="btn" to='/' role="button">Continue to homepage</Link>
+      </p>
+    </div>
   )
 }
 

@@ -75,6 +75,7 @@ dayMaker = (day) => {
 }
 
 isRegistered = (courseId, freeSpace) => {
+    while (this.props.table.loading_pressed) {}
     var alreadyRegistered = this.props.table.register.reduce((acc,cur) => acc||(cur.courseId === courseId), false)
     var alreadyWaiting = this.props.table.wait.reduce((acc,cur) => acc||(cur.courseId === courseId), false)
     if (!alreadyRegistered && !alreadyWaiting) {

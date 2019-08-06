@@ -1,5 +1,5 @@
-import { GET_CLASSES, ADD_PARTICIPANT, START_LOGIN, GET_PRESSED,
-   FINISHED_LOGIN, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE } from '../actions/types';
+import { GET_CLASSES, ADD_PARTICIPANT, START_LOGIN, GET_PRESSED, GET_PRESSED_FETCHING,
+   FINISHED_LOGIN, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE, GET_CLASSES_FETCHING } from '../actions/types';
 
 
 const initialState = {
@@ -9,11 +9,17 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case GET_CLASSES_FETCHING:
+      return {
+        ...state,
+        loading_classes: true
+      };
     case GET_CLASSES:
       return {
         ...state,
         classes: action.payload.rows,
-        participants: action.payload.rowsNum
+        participants: action.payload.rowsNum,
+        loading_classes: false
       };
     case ADD_PARTICIPANT:
       return {
@@ -50,11 +56,17 @@ export default function(state = initialState, action) {
         ...state,
         loggedIn: true
       }
+    case GET_PRESSED_FETCHING:
+      return {
+        ...state,
+        loading_pressed: true
+      }
     case GET_PRESSED:
       return {
         ...state,
         register: action.payload.register,
         wait: action.payload.wait,
+        loading_pressed: false
       }
     default:
       return state;

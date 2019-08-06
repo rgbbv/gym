@@ -70,6 +70,7 @@ render() {
       </div>
     )
   }
+  while (store.getState().loading) {}
     return (
       <div>
         <header>
