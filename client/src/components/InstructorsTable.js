@@ -39,7 +39,7 @@ render() {
     while (!store.getState().classes.ready_instructors) {}
     return (
        <div>
-          <table id='instructors'>
+          <table id='classes'>
              <tbody>
                 <tr>{this.renderTableHeader()}</tr>
                 {this.renderTableData()}
