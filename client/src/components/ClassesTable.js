@@ -13,7 +13,6 @@ class ClassesTable extends React.Component {
       }
     }
 
-
  renderTableHeader() {
     var classes = store.getState().classes.classes
     let header = Object.keys(omit(classes[0], ['id',  'maxNumOfParticipants', 'day', 'hour', 'instructor']))
@@ -39,8 +38,7 @@ class ClassesTable extends React.Component {
  }
 
 render() {
-    while (store.getState().classes.loading_classes) {}
-    console.log(store.getState())
+    while (!store.getState().classes.ready_classes) {}
     return (
        <div>
           <table id='classes'>

@@ -1,7 +1,6 @@
 import React from 'react'
 import ClassesTable from './ClassesTable'
 
-
 const ClassesPage = () => {
     return (
         <div>

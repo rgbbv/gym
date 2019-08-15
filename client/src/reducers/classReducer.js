@@ -13,25 +13,25 @@ export default function(state = initialState, action) {
     case GET_INSTRUCTORS_FETCHING:
       return {
         ...state,
-        loading_instructors: true
+        ready_instructors: false
       };
     case GET_INSTRUCTORS:
       return {
         ...state,
         instructors: action.payload,
-        loading_instructors: false
+        ready_instructors: true
       }
     case GET_CLASSES_FETCHING:
       return {
         ...state,
-        loading_classes: true
+        ready_classes: false
       };
     case GET_CLASSES:
       return {
         ...state,
         classes: action.payload.rows,
         participants: action.payload.rowsNum,
-        loading_classes: false
+        ready_classes: true
       };
     case ADD_PARTICIPANT:
       return {
@@ -71,14 +71,14 @@ export default function(state = initialState, action) {
     case GET_PRESSED_FETCHING:
       return {
         ...state,
-        loading_pressed: true
+        ready_pressed: false
       }
     case GET_PRESSED:
       return {
         ...state,
         register: action.payload.register,
         wait: action.payload.wait,
-        loading_pressed: false
+        ready_pressed: true
       }
     default:
       return state;

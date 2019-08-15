@@ -36,8 +36,7 @@ class InstructorsTable extends React.Component {
  }
 
 render() {
-    while (store.getState().classes.loading_instructors) {}
-    console.log(store.getState())
+    while (!store.getState().classes.ready_instructors) {}
     return (
        <div>
           <table id='instructors'>
