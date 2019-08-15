@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom"
 import './Table.css'
 import store from '../store';
+import moment from 'moment'
 
 const request = require("request");
 
@@ -43,6 +44,7 @@ class Table extends React.Component {
     if (this.props.table.classes.length === 0) return 'loading...'
     let header = Object.keys(omit(this.props.table.classes[0], ['id', 'description',
     'duration', 'maxNumOfParticipants']))
+    header.push('date')
     header.push('spots left')
     header.push(' ')
     return header.map((key, index) => {
@@ -52,6 +54,14 @@ class Table extends React.Component {
 
 registered = (id) => {
  return this.props.table.participants.reduce((acc, cur) =>  acc += cur.courseId === id.toString() ? cur.count : 0 , 0)
+}
+
+getDate = (day) => {
+  var classDay = moment().day(day);
+  if (!moment(classDay).isBefore()) {
+    return classDay.format("DD/MM/YY")
+  }
+  return classDay.add(7, 'day').format("DD/MM/YY")
 }
 
 dayMaker = (day) => {
@@ -106,8 +116,9 @@ isRegistered = (courseId, freeSpace) => {
                <td>{name}</td>
                <td>{instructor}</td>
                <td>{price}</td>
+               <td>{hour.substring(0,5)}</td>
                <td>{this.dayMaker(day)}</td>
-               <td>{hour.substring(0,5  )}</td>
+               <td>{this.getDate(this.dayMaker(day))}</td>
                <td>{maxNumOfParticipants-currentlyRegistered+'/'+maxNumOfParticipants}</td>
                <td id='regisButton'>{this.isRegistered(id, freeSpace, alreadyPressed)}</td>
             </tr>
