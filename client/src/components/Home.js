@@ -1,11 +1,12 @@
 import React from 'react'
 import Classes from './Classes'
+import './Home.css'
 
 
 const Home = (props) => {
   return (
     <div>
-      <div className="App">
+      <div>
         <header className="My Gym">
           <Classes />
         </header>

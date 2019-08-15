@@ -5,6 +5,7 @@ const HandleWaitingList = require('./HandleWaitingList')
 const HandleRegistered = require('./HandleRegistered')
 const HandleClasses = require('./HandleClasses')
 const HandleLogin = require('./HandleLogin')
+const HandleInstructors = require('./HandleInstructors')
 
 var connection = mysql.createConnection({
 	host     : 'localhost',
@@ -32,12 +33,11 @@ app.use((req, res, next) => {
 
 app.post('/enterWaitingList', (req, res) => {
 	HandleWaitingList.enterWaitingList(req, res, connection)
-})
-
+});
 
 app.post('/toRegister', (req, res) => {
 	HandleRegistered.checkRegistered(req, res, connection)
-})
+});
 
 app.get('/getListed', (req, res) => {
 	HandleRegistered.getRegistered(req, res, connection)
@@ -47,9 +47,13 @@ app.get('/getClasses', (req, res) => {
 	HandleClasses.getClasses(req, res, connection)
 });
 
+app.get('/getInstructors', (req, res) => {
+	HandleInstructors.getInstructors(req, res, connection)
+});
+
 app.post('/login', (req, res) => {
 	HandleLogin.login(req, res, connection)
-})
+});
 
 app.listen(3333);
 

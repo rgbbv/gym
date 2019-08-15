@@ -1,5 +1,5 @@
 import { GET_CLASSES, PUT_ID, FAILED_REGISTER, GET_PRESSED,
-   START_LOGIN, FINISHED_LOGIN, REGISTER_COMPLETE, GET_CLASSES_FETCHING } from './types';
+   START_LOGIN, FINISHED_LOGIN, REGISTER_COMPLETE, GET_CLASSES_FETCHING, GET_INSTRUCTORS, GET_INSTRUCTORS_FETCHING } from './types';
 
 const request = require("request");
 
@@ -43,6 +43,24 @@ export const finishedLogin = () => dispatch => {
 
 const idGenerator = () => '_' + Math.random().toString(36).substr(2, 9)
 
+export const getInstructors = () => dispatch => {
+  dispatch({
+    type: GET_INSTRUCTORS_FETCHING
+  })
+  request("http://localhost:3333/getInstructors", function(error, response, body) {
+    if (error) {
+        // Print the error if one occurred 
+        console.log('something went wrong on the request', error);
+    } 
+    else {
+        console.log(body)
+        dispatch({
+            type: GET_INSTRUCTORS,
+            payload: JSON.parse(body)
+          })
+    }
+  })
+};
 export const getClasses = () => dispatch => {
     dispatch({
       type: GET_CLASSES_FETCHING

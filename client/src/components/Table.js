@@ -10,7 +10,8 @@ import store from '../store';
 const request = require("request");
 
 class Table extends React.Component {
-   state = { email: [], register: [], wait: []}
+   state = { email: [], register: [], wait: [] }
+
 
  register = (courseId) => {
    var userIdKey = 'currentUserId'
@@ -40,8 +41,8 @@ class Table extends React.Component {
 
  renderTableHeader() {
     if (this.props.table.classes.length === 0) return 'loading...'
-    let header = Object.keys(omit(this.props.table.classes[0], ['id', 'maxNumOfParticipants', 'description',
-   'duration']))
+    let header = Object.keys(omit(this.props.table.classes[0], ['id', 'description',
+    'duration', 'maxNumOfParticipants']))
     header.push('spots left')
     header.push(' ')
     return header.map((key, index) => {
@@ -50,7 +51,7 @@ class Table extends React.Component {
  }
 
 registered = (id) => {
- return this.props.table.participants.reduce((acc, cur) =>  acc += cur.courseId === id ? cur.count : 0 , 0)
+ return this.props.table.participants.reduce((acc, cur) =>  acc += cur.courseId === id.toString() ? cur.count : 0 , 0)
 }
 
 dayMaker = (day) => {
@@ -75,9 +76,9 @@ dayMaker = (day) => {
 }
 
 isRegistered = (courseId, freeSpace) => {
-    while (this.props.table.loading_pressed) {}
-    var alreadyRegistered = this.props.table.register.reduce((acc,cur) => acc||(cur.courseId === courseId), false)
-    var alreadyWaiting = this.props.table.wait.reduce((acc,cur) => acc||(cur.courseId === courseId), false)
+    while (store.getState().classes.loading_pressed || store.getState().classes.loading_pressed === null) {}
+    var alreadyRegistered = this.props.table.register.reduce((acc,cur) => acc||(cur.courseId === courseId.toString()), false)
+    var alreadyWaiting = this.props.table.wait.reduce((acc,cur) => acc||(cur.courseId === courseId.toString()), false)
     if (!alreadyRegistered && !alreadyWaiting) {
       if (freeSpace) {
         return <button className="button" onClick={this.register.bind(this, courseId)}
@@ -114,10 +115,7 @@ isRegistered = (courseId, freeSpace) => {
      })
  }
 
- 
-  
  render() {
-
     return (
        <div>
           <table id='classes'>

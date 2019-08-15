@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getClasses, startLogin, finishedLogin, getPressed } from '../actions/classActions';
+import { getClasses, startLogin, finishedLogin, getPressed, getInstructors } from '../actions/classActions';
 import Table from './Table'
 import store from '../store'
 import './Classes.css'
@@ -15,6 +15,7 @@ class Classes extends React.Component {
     this.props.getPressed()
     this.props.getClasses()
     this.props.startLogin()
+    this.props.getInstructors()
   }
 
 
@@ -88,6 +89,7 @@ Classes.propTypes = {
   getClasses: PropTypes.func.isRequired,
   startLogin: PropTypes.func.isRequired,
   finishedLogin: PropTypes.func.isRequired,
+  getInstructors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -95,6 +97,7 @@ const mapStateToProps = state => ({
   wait: state.wait,
   classes: state.classes,
   participants: state.participants,
+  instructors: state.instructors
 });
 
-export default connect(mapStateToProps, { getClasses, startLogin, finishedLogin, getPressed })(Classes);
+export default connect(mapStateToProps, { getClasses, startLogin, finishedLogin, getPressed, getInstructors })(Classes);

@@ -1,5 +1,6 @@
 import { GET_CLASSES, ADD_PARTICIPANT, START_LOGIN, GET_PRESSED, GET_PRESSED_FETCHING,
-   FINISHED_LOGIN, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE, GET_CLASSES_FETCHING } from '../actions/types';
+   FINISHED_LOGIN, PUT_ID, FAILED_REGISTER, REGISTER_COMPLETE, GET_CLASSES_FETCHING,
+  GET_INSTRUCTORS, GET_INSTRUCTORS_FETCHING } from '../actions/types';
 
 
 const initialState = {
@@ -9,6 +10,17 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+    case GET_INSTRUCTORS_FETCHING:
+      return {
+        ...state,
+        loading_instructors: true
+      };
+    case GET_INSTRUCTORS:
+      return {
+        ...state,
+        instructors: action.payload,
+        loading_instructors: false
+      }
     case GET_CLASSES_FETCHING:
       return {
         ...state,

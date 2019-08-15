@@ -6,10 +6,10 @@ const Thankyou = () => {
   return (
     <div className="jumbotron text-xs-center">
       <h1 className="display-3">Thank You!</h1>
-      <p className="lead"><strong>Please check your email</strong> for further instructions on how to complete your account setup.</p>
+      <p className="lead"><strong>We will notify you by email</strong> if a spot has opened up in the class.</p>
       <hr/>
       <p className="lead">
-        <Link className="btn" to='/' role="button">Continue to homepage</Link>
+        <Link className="btn" to='/' role="button">Return to registration</Link>
       </p>
     </div>
   )
