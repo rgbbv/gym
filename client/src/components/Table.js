@@ -1,5 +1,5 @@
 import React from 'react'
-import {omit} from 'lodash'
+import {omit, sortBy } from 'lodash'
 import { addParticipant } from '../actions/classActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -58,7 +58,7 @@ registered = (id) => {
 
 getDate = (day) => {
   var classDay = moment().day(day);
-  if (!moment(classDay).isBefore()) {
+  if (moment(classDay).isAfter()) {
     return classDay.format("DD/MM/YY")
   }
   return classDay.add(7, 'day').format("DD/MM/YY")
@@ -103,9 +103,25 @@ isRegistered = (courseId, freeSpace) => {
    return alreadyRegistered ? 'Already registered' : 'Already on the waiting list'
   }
 
+ compareClasses(aClass, bClass) {
+   var aDate = this.getDate(this.dayMaker(aClass.day))
+   var bDate = this.getDate(this.dayMaker(bClass.day))
+   var aSplit = aDate.split('/');
+   var bSplit = bDate.split('/');
+   var dif = aSplit[2] - bSplit[2]
+   if (dif !== 0) return dif
+   dif = aSplit[1] - bSplit[1]
+   if (dif !== 0) return dif
+   dif = aSplit[0] - bSplit[0]
+   if (dif !== 0) return dif
+   return aClass.hour - bClass.hour
+ }
+
  renderTableData() {
     if (this.props.table === null) return ''
-    return this.props.table.classes.map((cell, index) => {
+    var classes = this.props.table.classes
+    let sortedClasses = classes.sort((a, b) => this.compareClasses(a,b)) 
+    return sortedClasses.map((cell, index) => {
        const { id, name, price, maxNumOfParticipants,
          instructor, day, hour } = cell //destructuring
          var currentlyRegistered = this.registered(id)
