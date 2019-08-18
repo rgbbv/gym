@@ -35,19 +35,19 @@ app.post('/addToWaitingList', (req, res) => {
 	HandleWaitingList.addToWaitingList(req, res, connection)
 });
 
-app.post('/toRegister', (req, res) => {
+app.post('/register', (req, res) => {
 	HandleRegistered.checkRegistered(req, res, connection)
 });
 
-app.get('/fetchParticipants', (req, res) => {
+app.get('/participants', (req, res) => {
 	HandleRegistered.fetchRegistered(req, res, connection)
 });
 
-app.get('/fetchClasses', (req, res) => {
+app.get('/classes', (req, res) => {
 	HandleClasses.fetchClasses(req, res, connection)
 });
 
-app.get('/fetchInstructors', (req, res) => {
+app.get('/instructors', (req, res) => {
 	HandleInstructors.fetchInstructors(req, res, connection)
 });
 

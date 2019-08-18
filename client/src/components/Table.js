@@ -1,21 +1,26 @@
 import React from 'react'
 import { omit } from 'lodash'
-import { addParticipant, addToWaitingList } from '../actions/registrationActions';
+import { addParticipant, addToWaitingList, fetchClasses } from '../actions/registrationActions'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom"
 import './Table.css'
 import moment from 'moment'
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
+import teal from '@material-ui/core/colors/teal';
+
+var tealTheme = createMuiTheme({ palette: { primary: { main: '#26a69a'} } })
 
 class Table extends React.Component {
-   state = { email: [], register: [], wait: [] }
-
+   state = { email: [], register: [], wait: [], showFullWeek: true }
 
  register = (courseId) => {
    this.props.addParticipant(courseId, this.props.history)
- }
-
- 
+ } 
 
  addToWaitingList = (courseId) => {
    this.props.addToWaitingList(courseId)
@@ -36,6 +41,12 @@ class Table extends React.Component {
 
 registered = (id) => {
  return this.props.amountRegistered.reduce((acc, cur) =>  acc += cur.courseId === id.toString() ? cur.count : 0 , 0)
+}
+
+changeButton = (showFullWeek) => {
+  this.setState( {showFullWeek: !showFullWeek})
+  showFullWeek ? this.props.fetchClasses(moment().day()) : this.props.fetchClasses() 
+
 }
 
 getDate = (day) => {
@@ -74,13 +85,18 @@ isRegistered = (courseId, freeSpace) => {
      acc||(cur.courseId === courseId.toString()), false)
     if (!alreadyRegistered && !alreadyWaiting) {
       if (freeSpace) {
-        return <button className="button" onClick={this.register.bind(this, courseId)}
-        type="submit">register</button>
+        return <ThemeProvider theme={tealTheme}>
+                 <Button variant="contained" color="primary" size='small'
+        onClick={this.register.bind(this, courseId)}
+        >register</Button>
+                </ThemeProvider>
       }
       else {
-        return <button className="button"
+        return <ThemeProvider theme={tealTheme}>
+        <Button variant="contained" color="primary" size='small'
         onClick={this.addToWaitingList.bind(this, courseId)}
-        type="submit">enter waiting list</button>
+        >enter waiting list</Button>
+               </ThemeProvider>
       }
     }
    return alreadyRegistered ? 'Already registered' : 'Already on the waiting list'
@@ -125,14 +141,26 @@ isRegistered = (courseId, freeSpace) => {
 
  render() {
     return (
-       <div>
+      <div>
+       <div className='view'>
+        <Grid item>
+          <ButtonGroup variant="contained" size="medium" aria-label="small contained button group">
+            <Button disabled={this.state.showFullWeek}
+             onClick={this.changeButton.bind(this, this.state.showFullWeek)}>full week</Button>
+            <Button disabled={!this.state.showFullWeek}
+             onClick={this.changeButton.bind(this, this.state.showFullWeek)}>until the weekend</Button>
+          </ButtonGroup>
+        </Grid>
+       </div>
+        <div>
           <table id='classes'>
              <tbody>
                 <tr>{this.renderTableHeader()}</tr>
                 {this.renderTableData()}
              </tbody>
           </table>
-       </div>
+        </div>
+      </div>
     )
  }
 }
@@ -140,7 +168,8 @@ isRegistered = (courseId, freeSpace) => {
 Table.propTypes = {
    addParticipant: PropTypes.func.isRequired,
    addToWaitingList: PropTypes.func.isRequired,
+   fetchClasses: PropTypes.func.isRequired,
  };
 
  
- export default connect(null, { addParticipant, addToWaitingList })(withRouter(Table));
+ export default connect(null, { addParticipant, addToWaitingList, fetchClasses })(withRouter(Table));

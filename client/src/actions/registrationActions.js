@@ -5,7 +5,7 @@ const request = require("request");
 export const fetchParticipants = () => dispatch => {
   const userIdKey = 'currentUserId'
   const currentUserId = localStorage.getItem(userIdKey)
-  request.get("http://localhost:3333/fetchParticipants?participantId="+currentUserId, function(error, response, body) {
+  request.get("http://localhost:3333/participants?participantId="+currentUserId, function(error, response, body) {
     if (error) throw error
     else {
       dispatch({
@@ -16,22 +16,23 @@ export const fetchParticipants = () => dispatch => {
   })
 }
 
-export const fetchClasses = () => dispatch => {
-    request("http://localhost:3333/fetchClasses", function(error, response, body) {
-        if (error) throw error
-        else {
-            dispatch({
-                type: FETCH_CLASSES,
-                payload: JSON.parse(body)
-              })
-        }
+export const fetchClasses = (day) => dispatch => {
+  var dayAdd = day === undefined ? '' : '?day='+day
+  request("http://localhost:3333/classes"+dayAdd, function(error, response, body) {
+    if (error) throw error
+    else {
+      dispatch({
+        type: FETCH_CLASSES,
+        payload: JSON.parse(body)
       })
-    };
+    }
+  })
+};
 
 export const addParticipant = (courseId, history) => dispatch => {
   const userIdKey = 'currentUserId'
   const currentUserId = localStorage.getItem(userIdKey)
-  request.post("http://localhost:3333/toRegister",
+  request.post("http://localhost:3333/register",
    {form:{participantId: currentUserId, courseId: courseId}},
    function(error, response, body) {
     if (error) throw error
