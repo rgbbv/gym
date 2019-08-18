@@ -1,4 +1,4 @@
-const { getWaitingList } = require('./HandleWaitingList')
+const { fetchWaitingList } = require('./HandleWaitingList')
 
 canRegister = (req, res, connection) => {
     var enterQue = 'INSERT IGNORE INTO registered (courseId, participantId) VALUES (?, ?)';
@@ -20,12 +20,12 @@ checkRegistered = (req, res, connection) => {
     })
 }
 
-getRegistered = (req, res, connection) => {
+fetchRegistered = (req, res, connection) => {
     var que = 'SELECT courseId FROM registered WHERE participantId = ?'
 	connection.query(que, [req.query.participantId], (err, rowsRegistered) => {
 		if (err) throw err
-		getWaitingList(req, res, connection, rowsRegistered)
+		fetchWaitingList(req, res, connection, rowsRegistered)
 	})
 }
 
-module.exports = { checkRegistered, getRegistered }
+module.exports = { checkRegistered, fetchRegistered }

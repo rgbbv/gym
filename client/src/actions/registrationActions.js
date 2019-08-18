@@ -1,11 +1,11 @@
-import { FETCH_CLASSES, FAILED_REGISTER, FETCH_PARTICIPANTS, REGISTER_COMPLETE } from './types';
+import { FETCH_CLASSES, FETCH_PARTICIPANTS, REGISTER_COMPLETE, ADD_TO_WAITING_LIST} from './types';
 
 const request = require("request");
 
 export const fetchParticipants = () => dispatch => {
   const userIdKey = 'currentUserId'
   const currentUserId = localStorage.getItem(userIdKey)
-  request.get("http://localhost:3333/getListed?participantId="+currentUserId, function(error, response, body) {
+  request.get("http://localhost:3333/fetchParticipants?participantId="+currentUserId, function(error, response, body) {
     if (error) throw error
     else {
       dispatch({
@@ -17,11 +17,8 @@ export const fetchParticipants = () => dispatch => {
 }
 
 export const fetchClasses = () => dispatch => {
-    request("http://localhost:3333/getClasses", function(error, response, body) {
-        if (error) {
-            // Print the error if one occurred 
-            console.log('something went wrong on the request', error);
-        } 
+    request("http://localhost:3333/fetchClasses", function(error, response, body) {
+        if (error) throw error
         else {
             dispatch({
                 type: FETCH_CLASSES,
@@ -31,29 +28,36 @@ export const fetchClasses = () => dispatch => {
       })
     };
 
-export const addParticipant = (participantId, courseId, history) => dispatch => {
-  request.post("http://localhost:3333/toRegister", {form:{participantId: participantId, courseId: courseId}},
+export const addParticipant = (courseId, history) => dispatch => {
+  const userIdKey = 'currentUserId'
+  const currentUserId = localStorage.getItem(userIdKey)
+  request.post("http://localhost:3333/toRegister",
+   {form:{participantId: currentUserId, courseId: courseId}},
    function(error, response, body) {
-    if (error) {
-      dispatch({
-        type: FAILED_REGISTER
-      })
-    }
-    else {
-      if (response.statusCode === 222) {
-        alert(response.body)
-        dispatch({
-          type: FAILED_REGISTER
-        })
-      }
+    if (error) throw error
       else {
         history.push("/Thankyou")
         dispatch({
           type: REGISTER_COMPLETE,
-          payload: courseId,
-          
         })
       }
+    }
+  )
+};
+
+export const addToWaitingList = (courseId) => dispatch => {
+  const userIdKey = 'currentUserId'
+  const currentUserId = localStorage.getItem(userIdKey)
+  request.post("http://localhost:3333/addToWaitingList",
+    {form:{ participantId: currentUserId, courseId: courseId}},
+    function(error, response, body) {
+    if (error) throw error
+    else {
+      alert(response.body)
+      window.location.reload();
+      dispatch({
+        type: ADD_TO_WAITING_LIST,
+      })
     }
   })
 };

@@ -1,5 +1,5 @@
 
-enterWaitingList = (req, res, connection) => {
+addToWaitingList = (req, res, connection) => {
 	var que = 'INSERT IGNORE INTO waiting (courseId, participantId) VALUES (?, ?)';
 	connection.query(que, [req.body.courseId, req.body.participantId], (err) => {
 		if (err) throw err;
@@ -7,7 +7,7 @@ enterWaitingList = (req, res, connection) => {
 	})
 }
 
-getWaitingList = (req, res, connection, rowsRegistered) => {
+fetchWaitingList = (req, res, connection, rowsRegistered) => {
 	var que = 'SELECT courseId FROM waiting WHERE participantId = ?'
 	connection.query(que, [req.query.participantId], (err2, rowsWaiting) => {
 		if (err2) throw err
@@ -15,4 +15,4 @@ getWaitingList = (req, res, connection, rowsRegistered) => {
 	})
 }
 
-module.exports = { enterWaitingList, getWaitingList }
+module.exports = { addToWaitingList, fetchWaitingList }

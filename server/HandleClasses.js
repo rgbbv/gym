@@ -1,5 +1,5 @@
 
-getClasses = (req, res, connection) => {
+fetchClasses = (req, res, connection) => {
     var que='SELECT classes.id, classes.name, classes.description, classes.duration, instructors.name as instructor, '
     que+='classes.price, classes.hour, classes.day, classes.maxNumOfParticipants FROM instructors RIGHT JOIN classes'
     que+=' ON classes.instructor = instructors.id'
@@ -13,4 +13,4 @@ getClasses = (req, res, connection) => {
     })
 }
 
-module.exports = { getClasses }
+module.exports = { fetchClasses }

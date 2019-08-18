@@ -3,7 +3,7 @@ import { FETCH_INSTRUCTORS } from './types';
 const request = require("request");
 
 export const fetchInstructors = () => dispatch => {
-    request("http://localhost:3333/getInstructors", function(error, response, body) {
+    request("http://localhost:3333/fetchInstructors", function(error, response, body) {
       if (error) {
           // Print the error if one occurred 
           console.log('something went wrong on the request', error);

@@ -1,41 +1,25 @@
 import React from 'react'
 import { omit } from 'lodash'
-import { addParticipant } from '../actions/registrationActions';
+import { addParticipant, addToWaitingList } from '../actions/registrationActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom"
 import './Table.css'
 import moment from 'moment'
 
-const request = require("request");
-
 class Table extends React.Component {
    state = { email: [], register: [], wait: [] }
 
 
  register = (courseId) => {
-   var userIdKey = 'currentUserId'
-   var currentId = localStorage.getItem(userIdKey)
-   this.props.addParticipant(currentId, courseId, this.props.history)
+   this.props.addParticipant(courseId, this.props.history)
  }
 
  
 
- waitingRegister = (courseId) => {
-  var userIdKey = 'currentUserId'
-  var currentId = localStorage.getItem(userIdKey)
-  request.post("http://localhost:3333/enterWaitingList",
-    {form:{ participantId: currentId, courseId: courseId}},
-    function(error, response, body) {
-    if (error) {
-      alert('currently we are unable to add you to the waiting list. please try later')
-    }
-    else {
-      alert(response.body)
-    }
-  })
-  this.setState({email: ''})
-  window.location.reload();
+ addToWaitingList = (courseId) => {
+   this.props.addToWaitingList(courseId)
+   this.setState({email: ''})
  }
 
 
@@ -95,7 +79,7 @@ isRegistered = (courseId, freeSpace) => {
       }
       else {
         return <button className="button"
-        onClick={this.waitingRegister.bind(this, courseId)}
+        onClick={this.addToWaitingList.bind(this, courseId)}
         type="submit">enter waiting list</button>
       }
     }
@@ -154,8 +138,9 @@ isRegistered = (courseId, freeSpace) => {
 }
 
 Table.propTypes = {
-   addParticipant: PropTypes.func.isRequired
+   addParticipant: PropTypes.func.isRequired,
+   addToWaitingList: PropTypes.func.isRequired,
  };
 
  
- export default connect(null, { addParticipant })(withRouter(Table));
+ export default connect(null, { addParticipant, addToWaitingList })(withRouter(Table));

@@ -31,24 +31,24 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.post('/enterWaitingList', (req, res) => {
-	HandleWaitingList.enterWaitingList(req, res, connection)
+app.post('/addToWaitingList', (req, res) => {
+	HandleWaitingList.addToWaitingList(req, res, connection)
 });
 
 app.post('/toRegister', (req, res) => {
 	HandleRegistered.checkRegistered(req, res, connection)
 });
 
-app.get('/getListed', (req, res) => {
-	HandleRegistered.getRegistered(req, res, connection)
+app.get('/fetchParticipants', (req, res) => {
+	HandleRegistered.fetchRegistered(req, res, connection)
 });
 
-app.get('/getClasses', (req, res) => {
-	HandleClasses.getClasses(req, res, connection)
+app.get('/fetchClasses', (req, res) => {
+	HandleClasses.fetchClasses(req, res, connection)
 });
 
-app.get('/getInstructors', (req, res) => {
-	HandleInstructors.getInstructors(req, res, connection)
+app.get('/fetchInstructors', (req, res) => {
+	HandleInstructors.fetchInstructors(req, res, connection)
 });
 
 app.post('/login', (req, res) => {

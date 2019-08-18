@@ -1,5 +1,5 @@
 
-getInstructors = (req, res, connection) => {
+fetchInstructors = (req, res, connection) => {
     var que = 'SELECT * FROM instructors'
 	connection.query(que, (err, rows) => {
 		if (err) throw err
@@ -7,4 +7,4 @@ getInstructors = (req, res, connection) => {
 	})
 }
 
-module.exports = { getInstructors }
+module.exports = { fetchInstructors }
