@@ -1,4 +1,4 @@
-import { CHECK_LOGIN, FINISHED_LOGIN, PUT_ID } from '../actions/types';
+import { CHECK_LOGIN, PUT_ID } from '../actions/types';
  
  
  const initialState = {
@@ -11,6 +11,7 @@ import { CHECK_LOGIN, FINISHED_LOGIN, PUT_ID } from '../actions/types';
         case PUT_ID:
                 return {
                   ...state,
+                  loggedIn: true,
                   id: action.payload,
                 }
         case CHECK_LOGIN:
@@ -18,12 +19,6 @@ import { CHECK_LOGIN, FINISHED_LOGIN, PUT_ID } from '../actions/types';
                 ...state,
                 loggedIn: action.payload.loggedIn,
                 id: action.payload.id
-            }
-        case FINISHED_LOGIN:
-            return {
-                ...state,
-                loggedIn: true,
-                id: action.payload
             }
         default:
             return state;

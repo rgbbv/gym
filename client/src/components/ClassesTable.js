@@ -2,12 +2,12 @@ import React from 'react'
 import {omit} from 'lodash'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getClasses } from '../actions/registrationActions';
+import { fetchClasses } from '../actions/registrationActions';
 
 class ClassesTable extends React.Component {
 
    componentWillMount() {
-      this.props.getClasses()
+      this.props.fetchClasses()
    }
 
  renderTableHeader() {
@@ -49,7 +49,7 @@ render() {
 }
 
 ClassesTable.propTypes = {
-   getClasses: PropTypes.func.isRequired,
+   fetchClasses: PropTypes.func.isRequired,
    classes: PropTypes.array.isRequired,
  };
  
@@ -57,4 +57,4 @@ const mapStateToProps = state => ({
    classes: state.registration.classes,
  });
  
-export default connect(mapStateToProps, { getClasses })(ClassesTable);
+export default connect(mapStateToProps, { fetchClasses })(ClassesTable);

@@ -40,7 +40,6 @@ class Table extends React.Component {
 
 
  renderTableHeader() {
-    if (this.props.classes.length === 0) return 'loading...'
     let header = Object.keys(omit(this.props.classes[0], ['id', 'description',
     'duration', 'maxNumOfParticipants']))
     header.push('date')

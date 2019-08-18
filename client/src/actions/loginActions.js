@@ -1,4 +1,4 @@
-import { PUT_ID, CHECK_LOGIN, FINISHED_LOGIN } from './types';
+import { PUT_ID, CHECK_LOGIN } from './types';
 
 export const putId = () => dispatch => {
     const userIdKey = 'currentUserId'
@@ -17,14 +17,6 @@ export const putId = () => dispatch => {
     dispatch({
       type: CHECK_LOGIN,
       payload: {loggedIn: loggedIn, id: id}
-    })
-  }
-  
-  export const finishedLogin = () => dispatch => {
-    const userIdKey = 'currentUserId'
-    dispatch({
-      type: FINISHED_LOGIN,
-      payload: localStorage.getItem(userIdKey)
     })
   }
 

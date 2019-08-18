@@ -2,12 +2,12 @@ import React from 'react'
 import {omit} from 'lodash'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getInstructors } from '../actions/instructorsActions';
+import { fetchInstructors } from '../actions/instructorsActions';
 
 class InstructorsTable extends React.Component {
 
    componentWillMount() {
-      this.props.getInstructors()
+      this.props.fetchInstructors()
     }
 
  renderTableHeader() {
@@ -47,7 +47,7 @@ render() {
 }
 
 InstructorsTable.propTypes = {
-   getInstructors: PropTypes.func.isRequired,
+   fetchInstructors: PropTypes.func.isRequired,
    instructors: PropTypes.array.isRequired
  };
  
@@ -55,4 +55,4 @@ const mapStateToProps = state => ({
    instructors: state.instructors.instructors,
  });
  
-export default connect(mapStateToProps, { getInstructors })(InstructorsTable);
+export default connect(mapStateToProps, { fetchInstructors })(InstructorsTable);

@@ -1,22 +1,22 @@
-import { GET_CLASSES, FAILED_REGISTER, GET_PRESSED, REGISTER_COMPLETE } from './types';
+import { FETCH_CLASSES, FAILED_REGISTER, FETCH_PARTICIPANTS, REGISTER_COMPLETE } from './types';
 
 const request = require("request");
 
-export const getPressed = () => dispatch => {
+export const fetchParticipants = () => dispatch => {
   const userIdKey = 'currentUserId'
   const currentUserId = localStorage.getItem(userIdKey)
   request.get("http://localhost:3333/getListed?participantId="+currentUserId, function(error, response, body) {
     if (error) throw error
     else {
       dispatch({
-        type: GET_PRESSED,
+        type: FETCH_PARTICIPANTS,
         payload: JSON.parse(body)
       })
     }
   })
 }
 
-export const getClasses = () => dispatch => {
+export const fetchClasses = () => dispatch => {
     request("http://localhost:3333/getClasses", function(error, response, body) {
         if (error) {
             // Print the error if one occurred 
@@ -24,7 +24,7 @@ export const getClasses = () => dispatch => {
         } 
         else {
             dispatch({
-                type: GET_CLASSES,
+                type: FETCH_CLASSES,
                 payload: JSON.parse(body)
               })
         }

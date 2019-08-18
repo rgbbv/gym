@@ -1,4 +1,4 @@
-import { GET_CLASSES, ADD_PARTICIPANT, GET_PRESSED,
+import { FETCH_CLASSES, ADD_PARTICIPANT, FETCH_PARTICIPANTS,
   FAILED_REGISTER, REGISTER_COMPLETE } from '../actions/types';
 
 
@@ -11,7 +11,7 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case GET_CLASSES:
+    case FETCH_CLASSES:
       return {
         ...state,
         classes: action.payload.rows,
@@ -36,7 +36,7 @@ export default function(state = initialState, action) {
         classes: state.classes.map( cur=> classAdder(action.payload,cur)),
         push: action.push
       }
-    case GET_PRESSED:
+    case FETCH_PARTICIPANTS:
       return {
         ...state,
         userRegistered: action.payload.registered,

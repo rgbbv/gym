@@ -1,8 +1,8 @@
-import { GET_INSTRUCTORS } from './types';
+import { FETCH_INSTRUCTORS } from './types';
  
 const request = require("request");
 
-export const getInstructors = () => dispatch => {
+export const fetchInstructors = () => dispatch => {
     request("http://localhost:3333/getInstructors", function(error, response, body) {
       if (error) {
           // Print the error if one occurred 
@@ -10,7 +10,7 @@ export const getInstructors = () => dispatch => {
       } 
       else {
           dispatch({
-              type: GET_INSTRUCTORS,
+              type: FETCH_INSTRUCTORS,
               payload: JSON.parse(body)
             })
       }

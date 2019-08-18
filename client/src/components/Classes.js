@@ -1,22 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getClasses, getPressed } from '../actions/registrationActions';
-import { getInstructors } from '../actions/instructorsActions';
-import { checkLogin, finishedLogin } from '../actions/loginActions'
+import { fetchClasses, fetchParticipants } from '../actions/registrationActions';
+import { fetchInstructors } from '../actions/instructorsActions';
+import { checkLogin, putId } from '../actions/loginActions'
 import Table from './Table'
 import './Classes.css'
-
-const request = require("request");
 
 class Classes extends React.Component {
   state = { name: '', email: ''}
 
   componentWillMount() {
-    this.props.getPressed()
-    this.props.getClasses()
+    this.props.fetchParticipants()
+    this.props.fetchClasses()
     this.props.checkLogin()
-    this.props.getInstructors()
+    this.props.fetchInstructors()
   }
 
 
@@ -40,17 +38,7 @@ class Classes extends React.Component {
       alert('please enter a real email')
     }
     else {
-      var userIdKey = 'currentUserId'
-      var currentUserId = localStorage.getItem(userIdKey) || this.idGenerator()
-      localStorage.setItem(userIdKey, currentUserId)
-      request.post("http://localhost:3333/login",
-      {form:{ id: currentUserId, name: name, email: email}},
-      function(error, response, body) {
-      if (error) { throw error }
-      else {
-      }
-      })
-      this.props.finishedLogin()
+      this.props.putId();
       this.setState({name: '', email: ''})
     }
   }
@@ -86,11 +74,11 @@ render() {
 
 
 Classes.propTypes = {
-  getPressed: PropTypes.func.isRequired,
-  getClasses: PropTypes.func.isRequired,
+  fetchParticipants: PropTypes.func.isRequired,
+  fetchClasses: PropTypes.func.isRequired,
   checkLogin: PropTypes.func.isRequired,
-  finishedLogin: PropTypes.func.isRequired,
-  getInstructors: PropTypes.func.isRequired,
+  putId: PropTypes.func.isRequired,
+  fetchInstructors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -102,4 +90,4 @@ const mapStateToProps = state => ({
   userWaiting: state.registration.userWaiting
 });
 
-export default connect(mapStateToProps, { getClasses, checkLogin, finishedLogin, getPressed, getInstructors })(Classes);
+export default connect(mapStateToProps, { fetchClasses, checkLogin, putId, fetchParticipants, fetchInstructors })(Classes);
