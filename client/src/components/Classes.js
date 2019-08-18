@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getClasses, startLogin, finishedLogin, getPressed, getInstructors } from '../actions/classActions';
+import { getClasses, getPressed } from '../actions/registrationActions';
+import { getInstructors } from '../actions/instructorsActions';
+import { checkLogin, finishedLogin } from '../actions/loginActions'
 import Table from './Table'
-import store from '../store'
 import './Classes.css'
 
 const request = require("request");
@@ -14,7 +15,7 @@ class Classes extends React.Component {
   componentWillMount() {
     this.props.getPressed()
     this.props.getClasses()
-    this.props.startLogin()
+    this.props.checkLogin()
     this.props.getInstructors()
   }
 
@@ -55,13 +56,13 @@ class Classes extends React.Component {
   }
 
 render() {
-  var checkLogin = store.getState().classes.loggedIn
+  var checkLogin = this.props.login.loggedIn
   if (!checkLogin) {
     return (
-      <div class="welcomer">
+      <div className="welcomer">
         <h4>Welcome to the gym system</h4>
         
-        <form class="form">
+        <form className="form">
           <input type="text" placeholder="Username" onChange={this.onChangeName.bind(this)}
          value={this.state.name}/>
           <input type="email" placeholder="Email" onChange={this.onChangeEmail.bind(this)}
@@ -71,13 +72,13 @@ render() {
       </div>
     )
   }
-  while (store.getState().loading) {}
     return (
       <div>
         <header>
           <h1>Registration system</h1>
         </header>
-        <Table table={this.props.classes} />
+        <Table classes={this.props.classes} amountRegistered={this.props.amountRegistered}
+        userRegistered={this.props.userRegistered} userWaiting={this.props.userWaiting} />
       </div>
     )
 }
@@ -87,17 +88,18 @@ render() {
 Classes.propTypes = {
   getPressed: PropTypes.func.isRequired,
   getClasses: PropTypes.func.isRequired,
-  startLogin: PropTypes.func.isRequired,
+  checkLogin: PropTypes.func.isRequired,
   finishedLogin: PropTypes.func.isRequired,
   getInstructors: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  register: state.register,
-  wait: state.wait,
-  classes: state.classes,
-  participants: state.participants,
-  instructors: state.instructors
+  classes: state.registration.classes,
+  amountRegistered: state.registration.amountRegistered,
+  instructors: state.instructors,
+  login: state.login,
+  userRegistered: state.registration.userRegistered,
+  userWaiting: state.registration.userWaiting
 });
 
-export default connect(mapStateToProps, { getClasses, startLogin, finishedLogin, getPressed, getInstructors })(Classes);
+export default connect(mapStateToProps, { getClasses, checkLogin, finishedLogin, getPressed, getInstructors })(Classes);

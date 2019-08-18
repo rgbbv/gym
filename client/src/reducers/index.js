@@ -1,6 +1,10 @@
 import { combineReducers } from 'redux';
-import classReducer from './classReducer';
+import registrationReducer from './registrationReducer';
+import instructorsReducer from './instructorsReducer';
+import loginReducer from './loginReducer'
 
 export default combineReducers({
-  classes: classReducer
+  registration: registrationReducer,
+  instructors: instructorsReducer,
+  login: loginReducer
 });

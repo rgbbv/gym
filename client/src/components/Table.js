@@ -1,11 +1,10 @@
 import React from 'react'
-import {omit, sortBy } from 'lodash'
-import { addParticipant } from '../actions/classActions';
+import { omit } from 'lodash'
+import { addParticipant } from '../actions/registrationActions';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom"
 import './Table.css'
-import store from '../store';
 import moment from 'moment'
 
 const request = require("request");
@@ -41,8 +40,8 @@ class Table extends React.Component {
 
 
  renderTableHeader() {
-    if (this.props.table.classes.length === 0) return 'loading...'
-    let header = Object.keys(omit(this.props.table.classes[0], ['id', 'description',
+    if (this.props.classes.length === 0) return 'loading...'
+    let header = Object.keys(omit(this.props.classes[0], ['id', 'description',
     'duration', 'maxNumOfParticipants']))
     header.push('date')
     header.push('spots left')
@@ -53,7 +52,7 @@ class Table extends React.Component {
  }
 
 registered = (id) => {
- return this.props.table.participants.reduce((acc, cur) =>  acc += cur.courseId === id.toString() ? cur.count : 0 , 0)
+ return this.props.amountRegistered.reduce((acc, cur) =>  acc += cur.courseId === id.toString() ? cur.count : 0 , 0)
 }
 
 getDate = (day) => {
@@ -86,9 +85,10 @@ dayMaker = (day) => {
 }
 
 isRegistered = (courseId, freeSpace) => {
-    while (!store.getState().classes.ready_pressed ) {}
-    var alreadyRegistered = this.props.table.register.reduce((acc,cur) => acc||(cur.courseId === courseId.toString()), false)
-    var alreadyWaiting = this.props.table.wait.reduce((acc,cur) => acc||(cur.courseId === courseId.toString()), false)
+    var alreadyRegistered = this.props.userRegistered.reduce((acc,cur) =>
+     acc||(cur.courseId === courseId.toString()), false)
+    var alreadyWaiting = this.props.userWaiting.reduce((acc,cur) =>
+     acc||(cur.courseId === courseId.toString()), false)
     if (!alreadyRegistered && !alreadyWaiting) {
       if (freeSpace) {
         return <button className="button" onClick={this.register.bind(this, courseId)}
@@ -118,14 +118,12 @@ isRegistered = (courseId, freeSpace) => {
  }
 
  renderTableData() {
-    if (this.props.table === null) return ''
-    var classes = this.props.table.classes
+    var classes = this.props.classes
     let sortedClasses = classes.sort((a, b) => this.compareClasses(a,b)) 
     return sortedClasses.map((cell, index) => {
        const { id, name, price, maxNumOfParticipants,
          instructor, day, hour } = cell //destructuring
          var currentlyRegistered = this.registered(id)
-         var alreadyPressed = store.getState().pressed
          var freeSpace = maxNumOfParticipants-currentlyRegistered
          return (
             <tr key={id}>
@@ -136,7 +134,7 @@ isRegistered = (courseId, freeSpace) => {
                <td>{this.dayMaker(day)}</td>
                <td>{this.getDate(this.dayMaker(day))}</td>
                <td>{maxNumOfParticipants-currentlyRegistered+'/'+maxNumOfParticipants}</td>
-               <td id='regisButton'>{this.isRegistered(id, freeSpace, alreadyPressed)}</td>
+               <td id='regisButton'>{this.isRegistered(id, freeSpace)}</td>
             </tr>
          )
      })

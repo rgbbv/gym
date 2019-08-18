@@ -1,20 +1,17 @@
 import React from 'react'
 import {omit} from 'lodash'
-import store from '../store';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getInstructors } from '../actions/classActions';
+import { getInstructors } from '../actions/instructorsActions';
 
 class InstructorsTable extends React.Component {
 
    componentWillMount() {
-      if(!store.getState().classes.instructors) {
-         this.props.getInstructors()
-      }
+      this.props.getInstructors()
     }
 
  renderTableHeader() {
-    var instructors = store.getState().classes.instructors
+    var instructors = this.props.instructors
     let header = Object.keys(omit(instructors[0], ['id']))
     return header.map((key, index) => {
        return <th key={index}>{key.toUpperCase()}</th>
@@ -22,7 +19,7 @@ class InstructorsTable extends React.Component {
  }
  
  renderTableData() {
-    var instructors = store.getState().classes.instructors
+    var instructors = this.props.instructors
     if (instructors === null) return ''
     return instructors.map((cell, index) => {
        const { id, name, background } = cell //destructuring
@@ -36,7 +33,6 @@ class InstructorsTable extends React.Component {
  }
 
 render() {
-    while (!store.getState().classes.ready_instructors) {}
     return (
        <div>
           <table id='classes'>
@@ -52,10 +48,11 @@ render() {
 
 InstructorsTable.propTypes = {
    getInstructors: PropTypes.func.isRequired,
+   instructors: PropTypes.array.isRequired
  };
  
 const mapStateToProps = state => ({
-   instructors: state.instructors,
+   instructors: state.instructors.instructors,
  });
  
 export default connect(mapStateToProps, { getInstructors })(InstructorsTable);

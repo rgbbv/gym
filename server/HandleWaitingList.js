@@ -11,7 +11,7 @@ getWaitingList = (req, res, connection, rowsRegistered) => {
 	var que = 'SELECT courseId FROM waiting WHERE participantId = ?'
 	connection.query(que, [req.query.participantId], (err2, rowsWaiting) => {
 		if (err2) throw err
-		res.send({register: rowsRegistered, wait: rowsWaiting})
+		res.send({registered: rowsRegistered, waiting: rowsWaiting})
 	})
 }
 

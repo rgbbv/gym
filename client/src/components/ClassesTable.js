@@ -1,20 +1,17 @@
 import React from 'react'
 import {omit} from 'lodash'
-import store from '../store';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getClasses } from '../actions/classActions';
+import { getClasses } from '../actions/registrationActions';
 
 class ClassesTable extends React.Component {
 
    componentWillMount() {
-      if(!store.getState().classes.classes) {
-         this.props.getClasses()
-      }
-    }
+      this.props.getClasses()
+   }
 
  renderTableHeader() {
-    var classes = store.getState().classes.classes
+    var classes = this.props.classes
     let header = Object.keys(omit(classes[0], ['id',  'maxNumOfParticipants', 'day', 'hour', 'instructor']))
     return header.map((key, index) => {
        return <th key={index}>{key.toUpperCase()}</th>
@@ -22,7 +19,7 @@ class ClassesTable extends React.Component {
  }
  
  renderTableData() {
-    var classes = store.getState().classes.classes
+    var classes = this.props.classes
     if (classes === null) return ''
     return classes.map((cell, index) => {
        const { id, name, description, price, duration } = cell //destructuring
@@ -38,7 +35,6 @@ class ClassesTable extends React.Component {
  }
 
 render() {
-    while (!store.getState().classes.ready_classes) {}
     return (
        <div>
           <table id='classes'>
@@ -54,10 +50,11 @@ render() {
 
 ClassesTable.propTypes = {
    getClasses: PropTypes.func.isRequired,
+   classes: PropTypes.array.isRequired,
  };
  
 const mapStateToProps = state => ({
-   classes: state.classes,
+   classes: state.registration.classes,
  });
  
 export default connect(mapStateToProps, { getClasses })(ClassesTable);
