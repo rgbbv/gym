@@ -1,11 +1,12 @@
-import { FETCH_CLASSES, FETCH_PARTICIPANTS, REGISTER_COMPLETE, ADD_TO_WAITING_LIST} from './types';
+import { FETCH_CLASSES, FETCH_PARTICIPANTS, REGISTER_COMPLETE,
+  LEAVE_WAITING_LIST, ADD_TO_WAITING_LIST, UNREGISTER} from './types';
+import { requestAddress, userIdKey } from '../topology';
 
 const request = require("request");
 
 export const fetchParticipants = () => dispatch => {
-  const userIdKey = 'currentUserId'
   const currentUserId = localStorage.getItem(userIdKey)
-  request.get("http://localhost:3333/participants?participantId="+currentUserId, function(error, response, body) {
+  request.get(requestAddress+"/participants?participantId="+currentUserId, function(error, response, body) {
     if (error) throw error
     else {
       dispatch({
@@ -18,7 +19,7 @@ export const fetchParticipants = () => dispatch => {
 
 export const fetchClasses = (day) => dispatch => {
   var dayAdd = day === undefined ? '' : '?day='+day
-  request("http://localhost:3333/classes"+dayAdd, function(error, response, body) {
+  request(requestAddress+"/classes"+dayAdd, function(error, response, body) {
     if (error) throw error
     else {
       dispatch({
@@ -29,10 +30,9 @@ export const fetchClasses = (day) => dispatch => {
   })
 };
 
-export const addParticipant = (courseId, history) => dispatch => {
-  const userIdKey = 'currentUserId'
+export const register = (courseId, history) => dispatch => {
   const currentUserId = localStorage.getItem(userIdKey)
-  request.post("http://localhost:3333/register",
+  request.post(requestAddress+"/register",
    {form:{participantId: currentUserId, courseId: courseId}},
    function(error, response, body) {
     if (error) throw error
@@ -47,18 +47,46 @@ export const addParticipant = (courseId, history) => dispatch => {
 };
 
 export const addToWaitingList = (courseId) => dispatch => {
-  const userIdKey = 'currentUserId'
   const currentUserId = localStorage.getItem(userIdKey)
-  request.post("http://localhost:3333/addToWaitingList",
+  request.post(requestAddress+"/addToWaitingList",
     {form:{ participantId: currentUserId, courseId: courseId}},
     function(error, response, body) {
     if (error) throw error
     else {
       alert(response.body)
-      window.location.reload();
       dispatch({
         type: ADD_TO_WAITING_LIST,
       })
+      window.location.reload()
+    }
+  })
+};
+
+export const leaveWaitingList = (courseId) => dispatch => {
+  const currentUserId = localStorage.getItem(userIdKey)
+  request.delete(requestAddress+"/leaveWaitingList",
+    {form:{ participantId: currentUserId, courseId: courseId}},
+    function(error, response, body) {
+    if (error) throw error
+    else {
+      dispatch({
+        type: LEAVE_WAITING_LIST,
+      })
+      window.location.reload()
+    }
+  })
+};
+
+export const unregister = (courseId) => dispatch => {
+  const currentUserId = localStorage.getItem(userIdKey)
+  request.delete(requestAddress+"/unregister", {form:{ participantId: currentUserId, courseId: courseId}},
+  function(error, response, body) {
+    if (error) throw error
+    else {
+      dispatch({
+        type: UNREGISTER
+      })
+      window.location.reload()
     }
   })
 };

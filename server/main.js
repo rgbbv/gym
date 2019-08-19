@@ -55,6 +55,14 @@ app.post('/login', (req, res) => {
 	HandleLogin.login(req, res, connection)
 });
 
+app.delete('/unregister', (req, res) => {
+	HandleRegistered.unregister(req, res, connection)
+});
+
+app.delete('/leaveWaitingList', (req, res) => {
+	HandleWaitingList.leaveWaitingList(req, res, connection)
+});
+
 app.listen(3333);
 
 console.log('listening on port 3333');

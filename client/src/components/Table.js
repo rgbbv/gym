@@ -1,6 +1,7 @@
 import React from 'react'
 import { omit } from 'lodash'
-import { addParticipant, addToWaitingList, fetchClasses } from '../actions/registrationActions'
+import { register, addToWaitingList, leaveWaitingList,
+   unregister, fetchParticipants, fetchClasses } from '../actions/registrationActions'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom"
@@ -11,20 +12,26 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
-import teal from '@material-ui/core/colors/teal';
 
 var tealTheme = createMuiTheme({ palette: { primary: { main: '#26a69a'} } })
 
 class Table extends React.Component {
-   state = { email: [], register: [], wait: [], showFullWeek: true }
+   state = { showFullWeek: true }
 
  register = (courseId) => {
-   this.props.addParticipant(courseId, this.props.history)
+   this.props.register(courseId, this.props.history)
  } 
 
  addToWaitingList = (courseId) => {
    this.props.addToWaitingList(courseId)
-   this.setState({email: ''})
+ }
+
+ unregister = (courseId) => {
+   this.props.unregister(courseId)
+ }
+
+ leaveWaitingList = (courseId) => {
+   this.props.leaveWaitingList(courseId)
  }
 
 
@@ -99,7 +106,14 @@ isRegistered = (courseId, freeSpace) => {
                </ThemeProvider>
       }
     }
-   return alreadyRegistered ? 'Already registered' : 'Already on the waiting list'
+   if (!alreadyRegistered) {
+    return <Button variant="contained" size='small'
+    onClick={this.leaveWaitingList.bind(this, courseId)}>leave waiting list</Button>
+   }
+   else {
+      return <Button variant="contained" size='small'
+      onClick={this.unregister.bind(this, courseId)}>cancel registration</Button>
+   }
   }
 
  compareClasses(aClass, bClass) {
@@ -166,10 +180,21 @@ isRegistered = (courseId, freeSpace) => {
 }
 
 Table.propTypes = {
-   addParticipant: PropTypes.func.isRequired,
+   register: PropTypes.func.isRequired,
    addToWaitingList: PropTypes.func.isRequired,
-   fetchClasses: PropTypes.func.isRequired,
+   unregister: PropTypes.func.isRequired,
+   fetchParticipants: PropTypes.func.isRequired,
+   leaveWaitingList: PropTypes.func.isRequired,
  };
 
+ const mapStateToProps = state => ({
+  userRegistered: state.registration.userRegistered,
+  userWaiting: state.registration.userWaiting,
+  classes: state.registration.classes,
+  amountRegistered: state.registration.amountRegistered,
+});
+
  
- export default connect(null, { addParticipant, addToWaitingList, fetchClasses })(withRouter(Table));
+ export default connect(mapStateToProps,
+   { register, addToWaitingList, leaveWaitingList,
+     unregister, fetchParticipants, fetchClasses })(withRouter(Table));

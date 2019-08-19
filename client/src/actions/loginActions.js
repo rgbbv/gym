@@ -1,12 +1,12 @@
 import { PUT_ID, CHECK_LOGIN } from './types';
+import { requestAddress, userIdKey } from '../topology'; 
 
 const request = require("request");
 
 export const putId = () => dispatch => {
-    const userIdKey = 'currentUserId'
     const currentUserId = localStorage.getItem(userIdKey) || idGenerator()
     localStorage.setItem(userIdKey, currentUserId)
-    request("http://localhost:3333/login", function(error, response, body) {
+    request(requestAddress+"/login", function(error, response, body) {
       if (error) throw error
       else {
         dispatch({
@@ -18,7 +18,6 @@ export const putId = () => dispatch => {
 }
   
   export const checkLogin = () => dispatch => {
-    const userIdKey = 'currentUserId'
     const loggedIn = localStorage.getItem(userIdKey) ? true : false
     const id = loggedIn ? localStorage.getItem(userIdKey) : ''
     dispatch({

@@ -28,4 +28,12 @@ fetchRegistered = (req, res, connection) => {
 	})
 }
 
-module.exports = { checkRegistered, fetchRegistered }
+unregister = (req, res, connection) => {
+    var que = 'DELETE FROM registered WHERE participantId = ? AND courseId = ?'
+    connection.query(que, [req.body.participantId, req.body.courseId], (err) => {
+        if (err) throw err
+        res.send('unregistered')
+    })
+}
+
+module.exports = { checkRegistered, fetchRegistered, unregister }

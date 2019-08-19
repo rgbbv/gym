@@ -1,5 +1,4 @@
-import { FETCH_CLASSES, ADD_PARTICIPANT, FETCH_PARTICIPANTS,
-  FAILED_REGISTER, REGISTER_COMPLETE } from '../actions/types';
+import { FETCH_CLASSES, REGISTER, FETCH_PARTICIPANTS, REGISTER_COMPLETE } from '../actions/types';
 
 
 const initialState = {
@@ -17,22 +16,13 @@ export default function(state = initialState, action) {
         classes: action.payload.rows,
         amountRegistered: action.payload.rowsNum,
       };
-    case ADD_PARTICIPANT:
+    case REGISTER:
       return {
         ...state,
-        accepted: false
       };
-    case FAILED_REGISTER:
-      return {
-        ...state,
-        registered: false,
-        accepted: true
-
-      }
     case REGISTER_COMPLETE:
       return {
         ...state,
-        registered: true,
         classes: state.classes.map( cur=> classAdder(action.payload,cur)),
         push: action.push
       }

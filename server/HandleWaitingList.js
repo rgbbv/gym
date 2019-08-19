@@ -7,6 +7,14 @@ addToWaitingList = (req, res, connection) => {
 	})
 }
 
+leaveWaitingList = (req, res, connection) => {
+	var que = 'DELETE FROM waiting WHERE participantId = ? AND courseId = ?'
+    connection.query(que, [req.body.participantId, req.body.courseId], (err) => {
+        if (err) throw err
+        res.send('left waiting list')
+    })
+}
+
 fetchWaitingList = (req, res, connection, rowsRegistered) => {
 	var que = 'SELECT courseId FROM waiting WHERE participantId = ?'
 	connection.query(que, [req.query.participantId], (err2, rowsWaiting) => {
@@ -15,4 +23,4 @@ fetchWaitingList = (req, res, connection, rowsRegistered) => {
 	})
 }
 
-module.exports = { addToWaitingList, fetchWaitingList }
+module.exports = { addToWaitingList, leaveWaitingList, fetchWaitingList }
