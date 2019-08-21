@@ -1,4 +1,4 @@
-const { fetchWaitingList } = require('./HandleWaitingList')
+const { fetchWaitingList, registerEarliestWaiting } = require('./HandleWaitingList')
 
 canRegister = (req, res, connection) => {
     var enterQue = 'INSERT IGNORE INTO registered (courseId, participantId) VALUES (?, ?)';
@@ -29,11 +29,11 @@ fetchRegistered = (req, res, connection) => {
 }
 
 unregister = (req, res, connection) => {
-    var que = 'DELETE FROM registered WHERE participantId = ? AND courseId = ?'
-    connection.query(que, [req.body.participantId, req.body.courseId], (err) => {
+    var queDeleteRegister = 'DELETE FROM registered WHERE participantId = ? AND courseId = ?'
+    connection.query(queDeleteRegister, [req.body.participantId, req.body.courseId], (err) => {
         if (err) throw err
-        res.send('unregistered')
     })
+    registerEarliestWaiting(req, res, connection)
 }
 
 module.exports = { checkRegistered, fetchRegistered, unregister }

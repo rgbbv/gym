@@ -23,4 +23,25 @@ fetchWaitingList = (req, res, connection, rowsRegistered) => {
 	})
 }
 
-module.exports = { addToWaitingList, leaveWaitingList, fetchWaitingList }
+registerEarliestWaiting = (req, res, connection) => {
+	var queSelect = 'SELECT * FROM waiting WHERE courseId = ? ORDER By added_at ASC LIMIT 1'
+	connection.query(queSelect, req.body.courseId, (errSelect, row) => {
+		if (errSelect) throw errSelect
+		if (row.participantId) {
+			var queInsert = 'INSERT INTO registered (courseId, participantId) VALUES (?, ?)'
+			connection.query(queInsert, [row.courseId, row.participantId], (errInsert) => {
+				if (errInsert) throw errInsert
+			})
+			var queDeleteWaiting = 'DELETE FROM waiting WHERE participantId = ? AND courseId = ?'
+			connection.query(queDeleteWaiting, [row.courseId, row.participantId], (errDelete) => {
+				if (errDelete) throw errDelete
+			})
+			res.send(row)
+		}
+		else {
+			res.send(null)
+		}
+	})
+}
+
+module.exports = { addToWaitingList, leaveWaitingList, fetchWaitingList, registerEarliestWaiting }
