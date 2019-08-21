@@ -1,11 +1,14 @@
 import React from 'react'
-import './Home.css'
+import './Login.css'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { putId } from '../actions/loginActions'
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 class Login extends React.Component {
     state = { name: '', email: ''}
+    
 
     idGenerator = () => '_' + Math.random().toString(36).substr(2, 9)
 
@@ -32,15 +35,17 @@ class Login extends React.Component {
     }
 
     render () {
+        
         return (
-            <div className="welcomer">
-                <h4>Welcome to the gym system</h4>
+            <div id="welcomer">
+                <h1>Welcome to the gym system</h1>
                 <form className="form">
-                <input type="text" placeholder="Username" onChange={this.onChangeName.bind(this)}
-                value={this.state.name}/>
-                <input type="email" placeholder="Email" onChange={this.onChangeEmail.bind(this)}
-                value={this.state.email}/>
-                <button onClick={this.login.bind(this)} type="submit" id="login-button">Login</button>
+                  <TextField id="outlined-name" label="Username" value={this.state.name}
+                    onChange={this.onChangeName.bind(this)} margin="dense" variant="outlined" />
+                  <TextField id="outlined-email" label="Email" value={this.state.email}
+                    onChange={this.onChangeEmail.bind(this)} margin="dense" variant="outlined" />
+                <Button onClick={this.login.bind(this)} variant="contained" color="primary"
+                id='button'>Login</Button>
                 </form>
             </div>
         )

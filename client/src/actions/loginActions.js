@@ -6,7 +6,7 @@ const request = require("request");
 export const putId = () => dispatch => {
     const currentUserId = localStorage.getItem(userIdKey) || idGenerator()
     localStorage.setItem(userIdKey, currentUserId)
-    request(requestAddress+"/login", function(error, response, body) {
+    request.post(requestAddress+"/login", function(error, response, body) {
       if (error) throw error
       else {
         dispatch({

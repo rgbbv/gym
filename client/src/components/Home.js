@@ -21,7 +21,9 @@ class Home extends React.Component {
     }
     else {
       return (
-        <Login />
+        <div>
+          <Login />
+        </div>
       )
     }
   }
