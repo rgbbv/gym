@@ -3,18 +3,27 @@ import { requestAddress, userIdKey } from '../topology';
 
 const request = require("request");
 
-export const putId = () => dispatch => {
-    const currentUserId = localStorage.getItem(userIdKey) || idGenerator()
-    localStorage.setItem(userIdKey, currentUserId)
-    request.post(requestAddress+"/login", function(error, response, body) {
-      if (error) throw error
-      else {
-        dispatch({
-          type: PUT_ID,
-          payload: currentUserId 
-        })
-      }
-    })
+export const putId = (id) => dispatch => {
+    if (id) {
+      localStorage.setItem(userIdKey, id)
+      dispatch({
+        type: PUT_ID,
+        payload: id
+      })
+    }
+    else {
+      const currentUserId = localStorage.getItem(userIdKey) || idGenerator()
+      localStorage.setItem(userIdKey, currentUserId)
+      request.post(requestAddress+"/login", function(error, response, body) {
+        if (error) throw error
+        else {
+          dispatch({
+            type: PUT_ID,
+            payload: currentUserId 
+          })
+        }
+      })
+    }
 }
   
   export const checkLogin = () => dispatch => {

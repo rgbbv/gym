@@ -27,16 +27,16 @@ registerEarliestWaiting = (req, res, connection) => {
 	var queSelect = 'SELECT * FROM waiting WHERE courseId = ? ORDER By added_at ASC LIMIT 1'
 	connection.query(queSelect, req.body.courseId, (errSelect, row) => {
 		if (errSelect) throw errSelect
-		if (row.participantId) {
+		if (row[0].participantId) {
 			var queInsert = 'INSERT INTO registered (courseId, participantId) VALUES (?, ?)'
-			connection.query(queInsert, [row.courseId, row.participantId], (errInsert) => {
+			connection.query(queInsert, [row[0].courseId, row[0].participantId], (errInsert) => {
 				if (errInsert) throw errInsert
 			})
 			var queDeleteWaiting = 'DELETE FROM waiting WHERE participantId = ? AND courseId = ?'
-			connection.query(queDeleteWaiting, [row.courseId, row.participantId], (errDelete) => {
+			connection.query(queDeleteWaiting, [row[0].participantId, row[0].courseId], (errDelete) => {
 				if (errDelete) throw errDelete
 			})
-			res.send(row)
+			res.send(row[0])
 		}
 		else {
 			res.send(null)
