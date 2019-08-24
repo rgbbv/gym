@@ -1,4 +1,4 @@
-import { FETCH_CLASSES, FETCH_PARTICIPANTS, REGISTER_COMPLETE,
+import { FETCH_CLASSES, FETCH_PARTICIPANTS, REGISTER,
   LEAVE_WAITING_LIST, ADD_TO_WAITING_LIST, UNREGISTER} from './types';
 import { requestAddress, userIdKey } from '../topology';
 
@@ -39,7 +39,8 @@ export const register = (courseId, history) => dispatch => {
       else {
         history.push("/Thankyou")
         dispatch({
-          type: REGISTER_COMPLETE,
+          type: REGISTER,
+          payload: {courseId: courseId}
         })
       }
     }
@@ -56,8 +57,8 @@ export const addToWaitingList = (courseId) => dispatch => {
       alert(response.body)
       dispatch({
         type: ADD_TO_WAITING_LIST,
+        payload: {courseId: courseId.toString()}
       })
-      window.location.reload()
     }
   })
 };
@@ -71,8 +72,8 @@ export const leaveWaitingList = (courseId) => dispatch => {
     else {
       dispatch({
         type: LEAVE_WAITING_LIST,
+        payload: {courseId: courseId}
       })
-      window.location.reload()
     }
   })
 };
@@ -84,9 +85,9 @@ export const unregister = (courseId) => dispatch => {
     if (error) throw error
     else {
       dispatch({
-        type: UNREGISTER
+        type: UNREGISTER,
+        payload: {courseId: courseId}
       })
-      window.location.reload()
     }
   })
 };

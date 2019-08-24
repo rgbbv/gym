@@ -27,7 +27,7 @@ registerEarliestWaiting = (req, res, connection) => {
 	var queSelect = 'SELECT * FROM waiting WHERE courseId = ? ORDER By added_at ASC LIMIT 1'
 	connection.query(queSelect, req.body.courseId, (errSelect, row) => {
 		if (errSelect) throw errSelect
-		if (row[0].participantId) {
+		if (row[0]) {
 			var queInsert = 'INSERT INTO registered (courseId, participantId) VALUES (?, ?)'
 			connection.query(queInsert, [row[0].courseId, row[0].participantId], (errInsert) => {
 				if (errInsert) throw errInsert
