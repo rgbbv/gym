@@ -14,4 +14,12 @@ fetchClasses = (req, res, connection) => {
     })
 }
 
-module.exports = { fetchClasses }
+fetchSpecificClass = (classId, connection, callback) => {
+    var que = 'SELECT name FROM classes WHERE id = '+classId
+    connection.query(que, (err, rows) => {
+        if (err) callback(err, null)
+        else callback(null, rows[0].name)
+    })
+}
+
+module.exports = { fetchClasses, fetchSpecificClass }

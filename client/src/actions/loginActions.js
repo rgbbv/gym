@@ -3,7 +3,7 @@ import { requestAddress, userIdKey } from '../topology';
 
 const request = require("request");
 
-export const putId = (id) => dispatch => {
+export const putId = (name, email, id) => dispatch => {
     if (id) {
       localStorage.setItem(userIdKey, id)
       dispatch({
@@ -14,7 +14,9 @@ export const putId = (id) => dispatch => {
     else {
       const currentUserId = localStorage.getItem(userIdKey) || idGenerator()
       localStorage.setItem(userIdKey, currentUserId)
-      request.post(requestAddress+"/login", function(error, response, body) {
+      request.post(requestAddress+"/login",
+      {form:{ id: currentUserId, name: name, email: email}},
+       function(error, response, body) {
         if (error) throw error
         else {
           dispatch({

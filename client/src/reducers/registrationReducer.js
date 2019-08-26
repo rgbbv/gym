@@ -1,4 +1,4 @@
-import { FETCH_CLASSES, FETCH_PARTICIPANTS, UNREGISTER, REGISTER_COMPLETE,
+import { FETCH_CLASSES, FETCH_PARTICIPANTS, UNREGISTER, REGISTER,
    LEAVE_WAITING_LIST, ADD_TO_WAITING_LIST } from '../actions/types';
 import { remove, set } from 'lodash'
 
@@ -17,7 +17,7 @@ export default function(state = initialState, action) {
         classes: action.payload.rows,
         amountRegistered: action.payload.rowsNum,
       };
-    case REGISTER_COMPLETE:
+    case REGISTER:
       return {
         ...state,
         amountRegistered: state.amountRegistered.map( cur=> classAdder(action.payload,cur)),
@@ -37,13 +37,13 @@ export default function(state = initialState, action) {
     case LEAVE_WAITING_LIST:
       return {
         ...state,
-        userWaiting: remove(state.userWaiting, cur => cur === action.payload)
+        userWaiting: remove(state.userWaiting, cur => cur.courseId !== action.payload.courseId.toString())
       }
     case UNREGISTER:
       return {
         ...state,
         amountRegistered: state.amountRegistered.map( cur => classReducer(action.payload, cur)),
-        userRegistered: remove(state.userRegistered, cur => cur === action.payload)
+        userRegistered: remove(state.userRegistered, cur => cur.courseId !== action.payload.courseId.toString())
       }
     default:
       return state;

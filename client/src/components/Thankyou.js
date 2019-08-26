@@ -6,7 +6,7 @@ const Thankyou = () => {
   return (
     <div className="jumbotron text-xs-center">
       <h1 className="display-3">Thank You!</h1>
-      <p className="lead"><strong>We will notify you by email</strong> if a spot has opened up in the class.</p>
+      <p className="lead"><strong>For using our system. </strong>We hope you a fun and productive class.</p>
       <hr/>
       <p className="lead">
         <Link className="btn" to='/' role="button">Return to registration</Link>

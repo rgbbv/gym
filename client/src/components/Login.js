@@ -35,13 +35,13 @@ class Login extends React.Component {
         alert('please enter a real email')
       }
       else {
-        this.props.putId();
+        this.props.putId(name, email);
       }
     }
 
     enter = () => {
       var id = this.state.debug
-      this.props.putId(id);
+      this.props.putId('', '', id);
     }
 
     render () {
