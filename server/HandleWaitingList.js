@@ -64,10 +64,10 @@ registerEarliestWaiting = (req, res, connection) => {
 			connection.query(queDeleteWaiting, [row[0].participantId, row[0].courseId], (errDelete) => {
 				if (errDelete) throw errDelete
 			})
-			res.send(row[0])
+			res.send(true)
 		}
 		else {
-			res.send(null)
+			res.send(false)
 		}
 	})
 }

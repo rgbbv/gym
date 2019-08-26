@@ -86,7 +86,7 @@ export const unregister = (courseId) => dispatch => {
     else {
       dispatch({
         type: UNREGISTER,
-        payload: {courseId: courseId}
+        payload: {courseId: courseId, isFull: body==='true'}
       })
     }
   })

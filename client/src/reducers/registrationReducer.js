@@ -40,10 +40,20 @@ export default function(state = initialState, action) {
         userWaiting: remove(state.userWaiting, cur => cur.courseId !== action.payload.courseId.toString())
       }
     case UNREGISTER:
-      return {
-        ...state,
-        amountRegistered: state.amountRegistered.map( cur => classReducer(action.payload, cur)),
-        userRegistered: remove(state.userRegistered, cur => cur.courseId !== action.payload.courseId.toString())
+      if (action.payload.isFull) {
+        return {
+          ...state,
+          userRegistered: remove(state.userRegistered, cur => cur.courseId !== action.payload.courseId.toString()),
+          unregistered: action.payload
+        }
+      }
+      else {
+        return {
+          ...state,
+          amountRegistered: state.amountRegistered.map( cur => classReducer(action.payload, cur)),
+          userRegistered: remove(state.userRegistered, cur => cur.courseId !== action.payload.courseId.toString()),
+          unregistered: action.payload
+        }
       }
     default:
       return state;

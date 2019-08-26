@@ -1,4 +1,5 @@
 const { fetchWaitingList, registerEarliestWaiting } = require('./HandleWaitingList')
+const { remove } = require('lodash')
 
 canRegister = (req, res, connection) => {
     var enterQue = 'INSERT IGNORE INTO registered (courseId, participantId) VALUES (?, ?)';
@@ -14,8 +15,11 @@ checkRegistered = (req, res, connection) => {
     checkQue+= ' as regis RIGHT JOIN classes as cla ON cla.id = regis.courseId group by regis.courseId'
     connection.query(checkQue, [req.body.courseId], (err, rows) => {
         if (err) throw err
-        var isFull = rows.reduce((acc, cur) => cur.id === req.body.courseId ? 
-        (cur.maxNumOfParticipants === cur.count) : acc, false);
+        var row = remove(rows, cur => cur.id.toString() === req.body.courseId)
+        console.log(row)
+        console.log(req.body)
+        var isFull = (row[0].maxNumOfParticipants <= row[0].count)
+        console.log(isFull)
         if (!isFull) canRegister(req, res, connection)
     })
 }

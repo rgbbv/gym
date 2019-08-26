@@ -91,7 +91,12 @@ isRegistered = (courseId, freeSpace) => {
     var alreadyWaiting = this.props.userWaiting.reduce((acc,cur) =>
      acc||(cur.courseId === courseId.toString()), false)
     if (!alreadyRegistered && !alreadyWaiting) {
-      if (freeSpace) {
+      var isFull = false
+      var unregistered = this.props.unregistered
+      if (unregistered){
+        isFull = (unregistered.courseId === courseId) ? unregistered.isFull : false
+      }
+      if (freeSpace && !isFull) {
         return <ThemeProvider theme={tealTheme}>
                  <Button variant="contained" color="primary" size='small'
         onClick={this.register.bind(this, courseId)}
@@ -192,6 +197,7 @@ Table.propTypes = {
   userWaiting: state.registration.userWaiting,
   classes: state.registration.classes,
   amountRegistered: state.registration.amountRegistered,
+  unregistered: state.registration.unregistered
 });
 
  
