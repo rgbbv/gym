@@ -16,10 +16,7 @@ checkRegistered = (req, res, connection) => {
     connection.query(checkQue, [req.body.courseId], (err, rows) => {
         if (err) throw err
         var row = remove(rows, cur => cur.id.toString() === req.body.courseId)
-        console.log(row)
-        console.log(req.body)
         var isFull = (row[0].maxNumOfParticipants <= row[0].count)
-        console.log(isFull)
         if (!isFull) canRegister(req, res, connection)
     })
 }
