@@ -7,6 +7,7 @@ const initialState = {
   amountRegistered: [],
   userRegistered: [],
   userWaiting: [],
+  unregistered: {},
 };
 
 export default function(state = initialState, action) {

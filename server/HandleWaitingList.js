@@ -42,12 +42,16 @@ registerEarliestWaiting = (req, res, connection) => {
 					else fetchSpecificClass(row[0].courseId, connection, (err, className) => {
 						if (err) throw err
 						else {
-							var text = 'Dear !,<br/> Due to a cancellation, a spot has been opened up in ?.'
-							text += ' Since you are the first in the waiting list we are moving you to the registered list.'
-							text += ' If you dont wish to attend please cancel your registration so the next person on the list can come.<br/>'
-							text += ' Thank you for using our service and have a great week.'
-							text = text.replace('!', participant.name)
-							text = text.replace('?', className)
+							var text = 
+							`Dear ${participant.name}, 
+							Due to a cancellation, a spot has been opened up in ${className} class.
+							Since you are the first in the waiting list we are moving you to the registered list.
+							If you don't wish to attend, please cancel your registration no later than the day.
+							Thank you for using our system.
+
+							Best regards,
+							Gym system`
+
 							const msg = {
 								to: participant.email,
 								from: 'registration@gym.com',

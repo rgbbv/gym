@@ -1,10 +1,10 @@
 import React from 'react'
-import Classes from './Classes'
 import Login from './Login'
 import './Home.css'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { checkLogin } from '../actions/loginActions'
+import RegistrationPage from './RegistrationPage';
 
 class Home extends React.Component {
 
@@ -16,7 +16,7 @@ class Home extends React.Component {
     var isLoggedIn = this.props.login.loggedIn
     if (isLoggedIn) {
       return (
-        <Classes />
+        <RegistrationPage />
       )
     }
     else {

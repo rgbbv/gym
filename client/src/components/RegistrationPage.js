@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchClasses, fetchParticipants } from '../actions/registrationActions';
 import { fetchInstructors } from '../actions/instructorsActions';
-import Table from './Table'
-import './Classes.css'
+import RegistrationTable from './RegistrationTable'
+import './RegistrationPage.css'
 
-class Classes extends React.Component {
+class RegistrationPage extends React.Component {
 
   componentWillMount() {
     this.props.fetchParticipants()
@@ -20,7 +20,7 @@ class Classes extends React.Component {
           <header>
             <h1>Registration system</h1>
           </header>
-          <Table classes={this.props.classes} amountRegistered={this.props.amountRegistered}
+          <RegistrationTable classes={this.props.classes} amountRegistered={this.props.amountRegistered}
           userRegistered={this.props.userRegistered} userWaiting={this.props.userWaiting} />
         </div>
       )
@@ -28,7 +28,7 @@ class Classes extends React.Component {
 }
 
 
-Classes.propTypes = {
+RegistrationPage.propTypes = {
   fetchParticipants: PropTypes.func.isRequired,
   fetchClasses: PropTypes.func.isRequired,
   fetchInstructors: PropTypes.func.isRequired,
@@ -43,4 +43,4 @@ const mapStateToProps = state => ({
   userWaiting: state.registration.userWaiting
 });
 
-export default connect(mapStateToProps, { fetchClasses, fetchParticipants, fetchInstructors })(Classes);
+export default connect(mapStateToProps, { fetchClasses, fetchParticipants, fetchInstructors })(RegistrationPage);
